@@ -23,7 +23,7 @@ def process_array(num, arr):
                 newarr.append(i)
             else:
                 newarr.append(abs(i))
-    print(newarr)
+    [print(f"{v} {type(v)}, ") for v in newarr]
 
 
 print("Problem 3")
