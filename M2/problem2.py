@@ -4,6 +4,10 @@ a3 = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01]
 a4 = [10.01, -12.22, 0.23, 19.20, -5.13, 3.12]
 
 
+# UCID - dm767
+# Date - Feb 6
+# Explanation - Rounding of sum/total values to next two decimal points
+
 def process_array(num, arr):
     print("\nProcessing Array({}): \n\n".format(num))
     print(arr)

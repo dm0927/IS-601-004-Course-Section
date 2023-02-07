@@ -5,6 +5,10 @@ a4 = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10]
 
 
 
+# UCID - dm767
+# Date - Feb 6
+# Explanation - The important function in this code is to find the modulus value during each iteration of I to see whether the value is even or odd.
+
 def process_array(num, arr):
     result = []
     print("\nProcessing Array({}):".format(num))
