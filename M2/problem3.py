@@ -3,6 +3,9 @@ a2 = [-1, 1, -2, 2, 3, -3, -4, 5]
 a3 = [-0.01, -0.0001, -.15]
 a4 = ["-1", "2", "-3", "4", "-5", "5", "-6", "6", "-7", "7"]
 
+# UCID - dm767
+# Date - Feb 6
+# Explanation - Rounding of sum/total values to next two decimal points
 
 def process_array(num, arr):
     newarr = []
