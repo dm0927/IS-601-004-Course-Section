@@ -51,6 +51,20 @@ def list_tasks(_tasks):
 
 # edits should happen below this line
 
+def validate_insert(name: str, description: str, due: str):
+    if name == "" or description == "" or due == "":
+        print("Missing Information")
+        return False
+    try:
+        str_to_datetime(due)
+    except:
+        print("Incorret date time format")
+        return False
+    return True
+
+def lastActivity():
+    return datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
 def add_task(name: str, description: str, due: str):
     """ Copies the TASK_TEMPLATE and fills in the passed in data then adds the task to the tasks list """
     task = TASK_TEMPLATE.copy() # don't delete this
@@ -61,6 +75,30 @@ def add_task(name: str, description: str, due: str):
     # output a message confirming the new task was added or if the addition was rejected due to missing data
     # make sure save() is still called last in this function
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
+
+    '''
+    UCID    - dm767
+    Date    - Feb 12
+    Comment - Firstly strip the value of name and desciption and then verify whether the values aren't null. 
+              Once those test case are passed, checking whether the date is in proper format, if yes they
+              stroe the value in task and then append in global variable tasks
+    '''
+    name = name.strip()
+    description = description.strip()
+
+    if validate_insert(name, description, due) == False:
+        return False
+    
+    task['name'] = name
+    task['description'] = description
+    task['due'] = due
+    task['lastActivity'] = lastActivity()
+
+    global tasks
+    tasks.append(task)
+
+    print("New Task is added")
+
     save()
 
 def process_update(index):
@@ -75,6 +113,23 @@ def process_update(index):
     due = input(f"When is this task due (format: m/d/y H:M:S) (TODO due) \n").strip()
     update_task(index, name=name, description=desc, due=due)
 
+def checkInboundIndex(index):
+    global tasks
+
+    valueReturn = {
+        'success' : True,
+        'data' : []
+    }
+
+    try:
+        valueReturn['success'] = True
+        valueReturn['data'] = tasks[index]
+    except IndexError:
+        valueReturn['success'] = False
+        valueReturn['data'] = "List doesn't have that value on that index"
+    
+    return valueReturn
+
 def update_task(index: int, name: str, description:str, due: str):
     """ Updates the name, description , due date of a task found by index if an update to the property was provided """
     # find the task by index
@@ -85,6 +140,44 @@ def update_task(index: int, name: str, description:str, due: str):
     # make sure save() is still called last in this function
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
     
+
+    name = name.strip()
+    description = description.strip()
+
+    valuereturn = checkInboundIndex(index)
+
+    if valuereturn['success'] == False:
+        print(valuereturn['data'])
+        return False
+    
+    task = valuereturn['data']
+
+    flag = False
+
+    if name != "" and task['name'] != name:
+        task['name'] = name
+        flag = True
+    
+    if description != "" and task['description'] != description:
+        task['description'] = description
+        flag = True
+    
+    if due != "" and task['due'] != due:
+        try:
+            str_to_datetime(due)
+        except:
+            return False
+        task['description'] = description
+        flag = True
+    
+    if flag == False:
+        print("No new input were give to update the task")
+        return False
+
+    task['lastActivity'] = lastActivity()
+    tasks[index] = task
+    print("The tast on the index is update")
+
     save()
 
 def mark_done(index):
