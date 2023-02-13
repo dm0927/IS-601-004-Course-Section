@@ -12,6 +12,26 @@ TASK_TEMPLATE = {
     "done": False # False if not done, datetime otherise
 }
 
+# Custom function to check whether there isn't list out of box index error
+def checkInboundIndex(index):
+
+    #For the user the index start from 1 therefore subtracting a value from each index called
+    global tasks
+
+    valueReturn = {
+        'success' : True,
+        'data' : []
+    }
+
+    try:
+        valueReturn['success'] = True
+        valueReturn['data'] = tasks[index]
+    except IndexError:
+        valueReturn['success'] = False
+        valueReturn['data'] = "List doesn't have that value on that index"
+    
+    return valueReturn
+
 # don't edit, intentionaly left an unhandled exception possibility
 def str_to_datetime(datetime_str):
     """ attempts to convert a string in one of two formats to a datetime
@@ -83,6 +103,7 @@ def add_task(name: str, description: str, due: str):
               Once those test case are passed, checking whether the date is in proper format, if yes they
               stroe the value in task and then append in global variable tasks
     '''
+
     name = name.strip()
     description = description.strip()
 
@@ -97,7 +118,7 @@ def add_task(name: str, description: str, due: str):
     global tasks
     tasks.append(task)
 
-    print("New Task is added")
+    print("New Task added")
 
     save()
 
@@ -113,23 +134,6 @@ def process_update(index):
     due = input(f"When is this task due (format: m/d/y H:M:S) (TODO due) \n").strip()
     update_task(index, name=name, description=desc, due=due)
 
-def checkInboundIndex(index):
-    global tasks
-
-    valueReturn = {
-        'success' : True,
-        'data' : []
-    }
-
-    try:
-        valueReturn['success'] = True
-        valueReturn['data'] = tasks[index]
-    except IndexError:
-        valueReturn['success'] = False
-        valueReturn['data'] = "List doesn't have that value on that index"
-    
-    return valueReturn
-
 def update_task(index: int, name: str, description:str, due: str):
     """ Updates the name, description , due date of a task found by index if an update to the property was provided """
     # find the task by index
@@ -140,6 +144,13 @@ def update_task(index: int, name: str, description:str, due: str):
     # make sure save() is still called last in this function
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
     
+    '''
+    UCID    - dm767
+    Date    - Feb 12
+    Comment - Comment to written
+    '''
+
+    global tasks
 
     name = name.strip()
     description = description.strip()
@@ -176,7 +187,7 @@ def update_task(index: int, name: str, description:str, due: str):
 
     task['lastActivity'] = lastActivity()
     tasks[index] = task
-    print("The tast on the index is update")
+    print("The task is updated with new values")
 
     save()
 
@@ -189,6 +200,33 @@ def mark_done(index):
     # make sure save() is still called last in this function
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
 
+    '''
+    UCID    - dm767
+    Date    - Feb 13
+    Comment - Comment to written
+    '''
+
+    global tasks
+
+    valuereturn = checkInboundIndex(index)
+
+    if valuereturn['success'] == False:
+        print(valuereturn['data'])
+        return False
+    
+    task = valuereturn['data']
+
+    if task['done'] == True:
+        print("Task already completed")
+        return True
+    
+    task['lastActivity'] = lastActivity
+    task['done'] = True
+
+    tasks[index] = task
+
+    print("Task Mark as Complted")
+
     save()
 
 def view_task(index):
@@ -197,7 +235,20 @@ def view_task(index):
     # consider index out of bounds scenarios and include appropriate message(s) for invalid index
     # utilize the given print statement when a task is found
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
-    task = {}
+
+    '''
+    UCID    - dm767
+    Date    - Feb 13
+    Comment - Comment to written
+    '''
+    valuereturn = checkInboundIndex(index)
+
+    if valuereturn['success'] == False:
+        print(valuereturn['data'])
+        return False
+
+    task = valuereturn['data']
+
     print(f"""
         [{'x' if task['done'] else ' '}] Task: {task['name']}\n 
         Description: {task['description']} \n 
