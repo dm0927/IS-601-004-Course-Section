@@ -265,7 +265,24 @@ def delete_task(index):
     # consider index out of bounds scenarios and include appropriate message(s) for invalid index
     # make sure save() is still called last in this function
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
+
+    global tasks
+
+    '''
+    UCID    - dm767
+    Date    - Feb 13
+    Comment - Comment to written
+    '''
+    valuereturn = checkInboundIndex(index)
+
+    if valuereturn['success'] == False:
+        print(valuereturn['data'])
+        return False
+
+    tasks.pop(index)
     
+    print("Task Deleted")
+
     save()
 
 def get_incomplete_tasks():
