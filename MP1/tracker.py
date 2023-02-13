@@ -83,7 +83,7 @@ def validate_insert(name: str, description: str, due: str):
     return True
 
 def lastActivity():
-    return datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    return datetime.now().strftime("%m/%d/%y %H:%M:%S")
 
 def add_task(name: str, description: str, due: str):
     """ Copies the TASK_TEMPLATE and fills in the passed in data then adds the task to the tasks list """
@@ -110,6 +110,7 @@ def add_task(name: str, description: str, due: str):
     if validate_insert(name, description, due) == False:
         return False
     
+    print(lastActivity())
     task['name'] = name
     task['description'] = description
     task['due'] = due
@@ -290,15 +291,45 @@ def get_incomplete_tasks():
     # generate a list of tasks where the task is not done
     # pass that list into list_tasks()
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
+    '''
+    UCID    - dm767
+    Date    - Feb 13
+    Comment - Comment to written
+    '''
+
+    global tasks
     _tasks = []
-    list_tasks(_tasks)
+
+    for task in tasks:
+        if not task['done']:
+            _tasks.append(task)
+  
+    if len(_tasks) > 0:
+        list_tasks(_tasks)
+    else:
+        print("No Pending Task Availble")
 
 def get_overdue_tasks():
     """ prints a list of tasks that are over due completion (not done and expired) """
     # generate a list of tasks where the due date is older than now and that are not complete
     # pass that list into list_tasks()
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
+    
+    '''
+    UCID    - dm767
+    Date    - Feb 13
+    Comment - Comment to written
+    '''
+
+    global tasks
     _tasks = []
+
+    getCurrentTime = lastActivity()
+    
+    for task in tasks:
+        if getCurrentTime > task['due'] and task['done'] == False:
+            _tasks.append(task)
+
     list_tasks(_tasks)
 
 def get_time_remaining(index):
