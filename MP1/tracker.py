@@ -99,26 +99,30 @@ def add_task(name: str, description: str, due: str):
     '''
     UCID    - dm767
     Date    - Feb 12
-    Comment - Firstly strip the value of name and desciption and then verify whether the values aren't null. 
-              Once those test case are passed, checking whether the date is in proper format, if yes they
-              stroe the value in task and then append in global variable tasks
+    Comment - Firstly striping the value of name and desciption and then verifyinh whether the values aren't null. 
+              Once those test case are passed, checking whether the date is in proper format, if yes then
+              storing the value in task and then appending it in global variable tasks and printing a success message,
+              if the condition of validate_insert fails it will display out the proper error message and stop the functioning
     '''
-
+    
     name = name.strip()
     description = description.strip()
 
+    # Validating the data inserted is proper or not
     if validate_insert(name, description, due) == False:
         return False
     
-    print(lastActivity())
+    # Store the value in task dict
     task['name'] = name
     task['description'] = description
     task['due'] = due
     task['lastActivity'] = lastActivity()
 
+    # Initializing the global tasks and then appending value in it
     global tasks
     tasks.append(task)
 
+    # Printing a sucess method
     print("New Task added")
 
     save()
@@ -130,6 +134,12 @@ def process_update(index):
     # show the existing value of each property where the TODOs are marked in the text of the inputs (replace the TODO related text)
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
     
+    '''
+    UCID    - dm767
+    Date    - Feb 12
+    Comment - Taking all the input from users and passing it to another funciton for compute.
+    '''
+
     name = input(f"What's the name of this task? (TODO name) \n").strip()
     desc = input(f"What's a brief descriptions of this task? (TODO description) \n").strip()
     due = input(f"When is this task due (format: m/d/y H:M:S) (TODO due) \n").strip()
@@ -148,7 +158,12 @@ def update_task(index: int, name: str, description:str, due: str):
     '''
     UCID    - dm767
     Date    - Feb 12
-    Comment - Comment to written
+    Comment - Basically, the values which are taken input are from "def process_update(index)" fucntion, firstly removing all 
+              the unnecassary spaces from name & description. Then checking whether the index is available in tasks, if not then
+              displaying a proper output message for it and stoping the funciton or else it goes further and check if there is any 
+              value which is empty then it would store the orignal value or else it would update it with new one. After this it see's
+              whether there is any changes in new values over previous values if no changes found it will print a message with a 
+              proper apporpriate message or else it would be printing success message and then finally save() is called.
     '''
 
     global tasks
@@ -204,7 +219,10 @@ def mark_done(index):
     '''
     UCID    - dm767
     Date    - Feb 13
-    Comment - Comment to written
+    Comment - The index value is check whether that index is availble in global tasks, if no then it display appropriate message 
+              according to it or else it goes further and store the data in local variable which then sees whether the task is 
+              completed or not, if completed the print the message according to it or else it udpates the lastActivivty and change
+              "done" key value to True, stating the task is completed and then print the success message.
     '''
 
     global tasks
@@ -221,7 +239,7 @@ def mark_done(index):
         print("Task already completed")
         return True
     
-    task['lastActivity'] = lastActivity
+    task['lastActivity'] = lastActivity()
     task['done'] = True
 
     tasks[index] = task
@@ -240,7 +258,8 @@ def view_task(index):
     '''
     UCID    - dm767
     Date    - Feb 13
-    Comment - Comment to written
+    Comment - It takes a index value which user want's to watch, checks whether the index exists or not in the tasks if not then
+              print message related to it or else will display the details of that index value to user
     '''
     valuereturn = checkInboundIndex(index)
 
@@ -267,13 +286,16 @@ def delete_task(index):
     # make sure save() is still called last in this function
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
 
-    global tasks
-
     '''
     UCID    - dm767
     Date    - Feb 13
-    Comment - Comment to written
+    Comment - If a user wants to delete the task they input a index value, firstly we check whether the index is available in tasks
+              If Yes, we delete the task and display the appropritate message.
+              If No, we display a message 
     '''
+
+    global tasks
+
     valuereturn = checkInboundIndex(index)
 
     if valuereturn['success'] == False:
@@ -294,7 +316,9 @@ def get_incomplete_tasks():
     '''
     UCID    - dm767
     Date    - Feb 13
-    Comment - Comment to written
+    Comment - We fetch all the tasks from global variable tasks and then loop it where we check the task which are not completed
+              by using if conidtion to check whether the key "done" is True or False, if False we store that task in local variable
+              in list. If the list is greater then 0 we list all the incompleted task or else we say "No Pending Task Available"
     '''
 
     global tasks
@@ -318,7 +342,11 @@ def get_overdue_tasks():
     '''
     UCID    - dm767
     Date    - Feb 13
-    Comment - Comment to written
+    Comment - We call the global tasks and declare a variable to store all the overdue tasks in it. We fetch current date & time
+              using lastActivity() function and store it in a variable getCurrentTime. Then we rotate a loop taking an individual
+              task and checking whether the currentTime is greater the due time and the task is not completed then we store it in 
+              the local variable which we initialise before. Then we check whether the local variable _tasks lenght is more then
+              0, if yes then we display all the over due tasks or else we print a message
     '''
 
     global tasks
@@ -330,7 +358,22 @@ def get_overdue_tasks():
         if getCurrentTime > task['due'] and task['done'] == False:
             _tasks.append(task)
 
-    list_tasks(_tasks)
+    if len(_tasks) > 0:
+        list_tasks(_tasks)
+    else:
+        print("There are no task which are overdue as of now")
+
+# Calculating date difference between two dates and returing the response in seconds
+def find_diff_in_time(dt2, dt1):
+  overall = dt2 - dt1
+  return overall.days * 24 * 3600 + overall.seconds
+
+# Calculating no. of days, hours, minutes, seconds from passing seconds
+def calc_days_hrs_min_sec(sec):
+	min, sec = divmod(sec, 60)
+	hrs, min = divmod(min, 60)
+	days, hrs = divmod(hrs, 24)
+	return (days, hrs, min, sec)
 
 def get_time_remaining(index):
     """ outputs the number of days, hours, minutes, seconds a task has before it's overdue otherwise shows similar info for how far past due it is """
@@ -340,7 +383,43 @@ def get_time_remaining(index):
     # display the remaining time via print in a clear format showing days, hours, minutes, seconds
     # if the due date is in the past print out how many days, hours, minutes, seconds the task is over due (clearly note that it's over due, values should be positive)
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
+
+    '''
+    UCID    - dm767
+    Date    - Feb 17
+    Comment - We declare the global tasks to have access to all the task which are available, then we verify whether the index
+              is available if yes we continue or else we show a proper error message and stop. If we continue then we convert
+              the due date-time of the task to datetime type and get current datetime using datetime.now().
+              Then we call two difference first find_diff_in_time() two subtract two dates and return total amount of seconds from it.
+              Then we call calc_days_hrs_min_sec() to calculate days, hrs, minutes, seconds from seconds as a parameter.
+              Then we check whether the days is negative or positive and display the appropriate message according to it to the 
+              user.
+    '''
+    
+    global tasks
     task = {}
+
+    valuereturn = checkInboundIndex(index)
+
+    if valuereturn['success'] == False:
+        print(valuereturn['data'])
+        return False
+    
+    task = tasks[index]
+
+    if task['done']:
+        print(f"Task Completed on {task['lastActivity']}")
+        return True
+
+    due_date = str_to_datetime(task['due'])
+    current_date_time = datetime.now()
+
+    days, hrs, min, sec = calc_days_hrs_min_sec(find_diff_in_time(due_date, current_date_time))
+    if days > 0:
+        print(f'The task needs to be completed in next {days} days, {hrs} hours, {min} minutes, {sec} seconds')
+    else:
+        days *= -1
+        print(f'The task is overdue since {days} days, {hrs} hours, {min} minutes, {sec} seconds')
 
 # no changes needed below this line
 
