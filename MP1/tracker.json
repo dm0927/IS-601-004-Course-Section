@@ -1,23 +1,23 @@
 [
     {
-        "name": "test",
-        "due": "01/01/23 23:59:59",
-        "lastActivity": "13/02/2023 16:34:44",
-        "description": "test",
-        "done": false
-    },
-    {
-        "name": "CRUD Operation",
-        "due": "03/01/23 23:59:59",
-        "lastActivity": "02/17/23 04:37:47",
-        "description": "Perform CRUD operation for shopping list",
-        "done": true
-    },
-    {
         "name": "Deply the code on server",
         "due": "02/18/23 23:59:59",
         "lastActivity": "02/17/23 04:39:10",
         "description": "Fixed all the bugs and deploy it on server",
+        "done": false
+    },
+    {
+        "name": "Final Deployment",
+        "due": "02/27/23 23:59:59",
+        "lastActivity": "02/17/23 04:51:33",
+        "description": "To deploy it on server",
+        "done": false
+    },
+    {
+        "name": "Knoweldge Transfer",
+        "due": "02/20/23 23:59:59",
+        "lastActivity": "02/17/23 05:34:30",
+        "description": "Give a breif intro to new joinees",
         "done": false
     }
 ]
