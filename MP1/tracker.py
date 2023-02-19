@@ -15,7 +15,6 @@ TASK_TEMPLATE = {
 # Custom function to check whether there isn't list out of box index error
 def checkInboundIndex(index):
 
-    #For the user the index start from 1 therefore subtracting a value from each index called
     global tasks
 
     valueReturn = {
@@ -137,12 +136,23 @@ def process_update(index):
     '''
     UCID    - dm767
     Date    - Feb 12
-    Comment - Taking all the input from users and passing it to another funciton for compute.
+    Comment - Firstly, verifying whether the index is out of bound or not, if out of bound then shows a proper error message or else
+              display save the data in a variable name called task, then we use information to display those values when taking input
+              from user, so they have a idea what were the previous value.
+              
     '''
 
-    name = input(f"What's the name of this task? (TODO name) \n").strip()
-    desc = input(f"What's a brief descriptions of this task? (TODO description) \n").strip()
-    due = input(f"When is this task due (format: m/d/y H:M:S) (TODO due) \n").strip()
+    valuereturn = checkInboundIndex(index)
+
+    if valuereturn['success'] == False:
+        print(valuereturn['data'])
+        return False
+    
+    task = valuereturn['data']
+
+    name = input(f"What's the name of this task? ({task['name']}) \n").strip()
+    desc = input(f"What's a brief descriptions of this task? ({task['description']}) \n").strip()
+    due = input(f"When is this task due (format: m/d/y H:M:S) (${task['due']}) \n").strip()
     update_task(index, name=name, description=desc, due=due)
 
 def update_task(index: int, name: str, description:str, due: str):
