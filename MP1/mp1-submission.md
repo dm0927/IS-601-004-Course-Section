@@ -1,6 +1,6 @@
 <table><tr><td> <em>Assignment: </em> IS601 - Mini Project 1 - Tracker App</td></tr>
 <tr><td> <em>Student: </em> Divya Rajesh Mehta (dm767)</td></tr>
-<tr><td> <em>Generated: </em> 2/19/2023 1:21:03 PM</td></tr>
+<tr><td> <em>Generated: </em> 2/19/2023 1:24:42 PM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/is601-mini-project-1-tracker-app/grade/dm767" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <ol><li>Checkout dev branch and pull any pending changes&nbsp;</li><ol><li>&nbsp;git checkout dev</li><li>&nbsp;git pull origin dev</li></ol><li>Create a new branch for this assignment (see Desired Branch Name)</li><ol><li>git checkout -b MP1-Tracker</li></ol><li>Create a new folder called MP1 in your local repository</li><li>Create a new file called tracker.py</li><li>Copy/paste the content from this template:&nbsp;&nbsp;<a href="https://gist.github.com/MattToegel/380e6baa24f6c25b74bf2ce99ccba6da">https://gist.github.com/MattToegel/380e6baa24f6c25b74bf2ce99ccba6da</a></li><li>Add/commit/push the template file</li><ol><li>git add --all</li><li>git commit -m "adding template"</li><li>git push origin MP1-Tracker</li></ol><li>Create a pull request from MP1-Tracker to dev (keep it open, do not close it until you're done)</li><li>Solve the various todo items (also noted below in the deliverables) and fill in the evidence</li><ol><li>Periodically add/commit; recommended after each solved item or every few items</li></ol><li>Save and copy/download the markdown</li><li>Create a new file mp1-submission.md in the MP1 folder</li><li>Add the markdown content</li><li>add/commit/push all the pending files for this assignment (tracker.py and mp1-submission.md)</li><li>If everything looks good on the pull request complete the merge</li><li>Create a new pull request from dev to prod and merge it to update prod (not used yet but you want to keep this up to date)</li><li>checkout dev locally and pull the changes to be up to date</li><li>Navigate to the prod branch on github and find the mp1-submission.md file and get the link to the file to submit to canvas</li></ol></td></tr></table>
 <table><tr><td> <em>Deliverable 1: </em> Add Task Logic </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
@@ -28,8 +28,8 @@
 </table></td></tr>
 <table><tr><td> <em>Deliverable 2: </em> Process Update Logic </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add screenshot(s) of the edited process_update() function</td></tr>
-<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/219612565-56624d78-69f9-4e3d-9244-4c0063e7e4f6.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Process Update - 1<br></p>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/219967452-da3ad4a6-ca65-4014-a6d1-ec7fd5ae7e13.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Verifying the value and the displaying it in the input box<br></p>
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Briefly explain the solutions to the checklist items for process_update()</td></tr>
@@ -190,5 +190,6 @@
 <tr><td> <em>Response:</em> <ol><li>There were few issues majorly with datetime conversion which I overcome through seeing<br>it online from different website.</li><li>Also came to know we can a copy a<br>whole object with .copy() function.</li></ol><br></td></tr>
 <tr><td> <em>Sub-Task 4: </em> Add pull request for this assignment (project branch to dev)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/dm0927/IS-601-004-Course-Section/pull/8">https://github.com/dm0927/IS-601-004-Course-Section/pull/8</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/dm0927/IS-601-004-Course-Section/pull/10">https://github.com/dm0927/IS-601-004-Course-Section/pull/10</a> </td></tr>
 </table></td></tr>
 <table><tr><td><em>Grading Link: </em><a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/is601-mini-project-1-tracker-app/grade/dm767" target="_blank">Grading</a></td></tr></table>
