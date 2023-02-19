@@ -1,8 +1,8 @@
 [
     {
-        "name": "Deply the code on server",
+        "name": "Deploy code on production",
         "due": "02/18/23 23:59:59",
-        "lastActivity": "02/17/23 04:39:10",
+        "lastActivity": "02/19/23 13:11:37",
         "description": "Fixed all the bugs and deploy it on server",
         "done": false
     },
