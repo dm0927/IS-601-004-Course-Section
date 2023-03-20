@@ -87,7 +87,7 @@ class BurgerMachine:
                 self.inprogress_burger.append(c)
                 self.inprogress_burger_price.append(c.cost)
                 return
-        raise InvalidChoiceException
+        raise (InvalidChoiceException(choice))
 
     def pick_patty(self, choice):
         if self.currently_selecting != STAGE.Patty:
@@ -104,7 +104,7 @@ class BurgerMachine:
                 self.remaining_patties -= 1
                 self.remaining_uses -= 1
                 return
-        raise InvalidChoiceException
+        raise (InvalidChoiceException(choice))
 
     def pick_toppings(self, choice):
         if self.currently_selecting != STAGE.Toppings:
@@ -118,7 +118,7 @@ class BurgerMachine:
                 self.inprogress_burger_price.append(t.cost)
                 self.remaining_toppings -= 1
                 return
-        raise InvalidChoiceException
+        raise (InvalidChoiceException(choice))
 
     def reset(self):
         self.remaining_patties = self.MAX_PATTIES
@@ -153,7 +153,7 @@ class BurgerMachine:
             print("Thank you! Enjoy your burger!")
             self.total_burgers += 1
             self.total_sales += expected # only if successful
-            print(f"Total sales so far {self.total_sales}")
+            print(f"Total sales so far {self.total_sales} for {self.total_burgers} burgers")
             self.reset()
         else:
             raise InvalidPaymentException
@@ -185,8 +185,6 @@ class BurgerMachine:
                 self.print_current_burger()
             elif self.currently_selecting == STAGE.Pay:
                 expected = self.calculate_cost()
-                # show expected value as currency format
-                # require total to be entered as currency format
                 expected1 = locale.currency(expected, grouping=True)
                 total = input(f"Your total is {expected1}, please enter the exact value.\n")
                 self.handle_pay(expected, total)
@@ -201,30 +199,41 @@ class BurgerMachine:
             # quit
             print("Quitting the burger machine")
             sys.exit()
-        # handle OutOfStockException
-            # show an appropriate message of what stage/category was out of stock
         except OutOfStockException:
+            '''
+                UCID - dm767
+                Date - March 20, 2023
+            '''
             print("The item doesn't appears to be in stock")
-        # handle NeedsCleaningException
-            # prompt user to type "clean" to trigger clean_machine()
-            # any other input is ignored
-            # print a message whether or not the machine was cleaned
         except NeedsCleaningException:
-            t = input(f"Type clean to clean the machine")
+            '''
+                UCID - dm767
+                Date - March 20, 2023
+            '''
+            t = input(f"Type clean to clean the machine:")
             if t == "clean":
                 self.clean_machine()
-                
-        # handle InvalidChoiceException
-            # show an appropriate message of what stage/category was the invalid choice was in
-        # handle ExceededRemainingChoicesException
-            # show an appropriate message of which stage/category was exceeded
-            # move to the next stage/category
-        # handle InvalidPaymentException
-            # show an appropriate message
+                print("The Machine is cleaned and ready to be used again.")
+        except InvalidChoiceException as Argument:
+            '''
+                UCID - dm767
+                Date - March 20, 2023
+            '''
+            print(f"The {self.currently_selecting} stage has no '{Argument}' choice of option.")
+        except ExceededRemainingChoicesException:
+            print(f"The {self.currently_selecting} stage has been exceeded.")
+            if self.currently_selecting == STAGE.Patty:
+                self.currently_selecting = STAGE.Toppings
+            else:
+                self.currently_selecting = STAGE.Pay
+        except InvalidPaymentException:
+            '''
+                UCID - dm767
+                Date - March 20, 2023
+            '''
+            print("Wrong amount entered, please enter correct amount to process your payment")
         except:
-            # this is a default catch all, follow the steps above
             print("Something went wrong")
-        
         self.run()
 
     def start(self):
