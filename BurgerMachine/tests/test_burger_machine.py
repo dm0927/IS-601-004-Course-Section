@@ -2,8 +2,9 @@ import pytest
 # make sure there's an __init__.py in this tests folder and that
 # the tests folder is in the same folder as the IcecreamMachine stuff
 from BurgerMachine import BurgerMachine
-from BurgerMachineExceptions import ExceededRemainingChoicesException, InvalidChoiceException, InvalidStageException, NeedsCleaningException, OutOfStockException
-from BurgerMachineExceptions import InvalidPaymentException
+from BurgerMachine import STAGE
+from BurgerMachine import Usable
+from BurgerMachineExceptions import ExceededRemainingChoicesException, InvalidChoiceException, InvalidStageException, OutOfStockException
 #this is an example test showing how to cascade fixtures to build up state
 
 @pytest.fixture
@@ -14,130 +15,96 @@ def machine():
 # sample fixture, can delete if not using
 @pytest.fixture
 def first_order(machine):
-    '''
-        UCID - dm767
-        Date - March 20, 2023
-    '''
     machine.handle_bun("no bun")
     machine.handle_patty("veggie")
+    machine.handle_patty("veggie")
+    machine.handle_patty("veggie")    
     machine.handle_patty("next")
     machine.handle_toppings("done")
-    machine.handle_pay(sum(machine.inprogress_burger_price),"1")
-    print("Test Case 1 Passed")
+    machine.handle_pay(3,"3")
     return machine
 
-# sample fixture, can delete if not using
 @pytest.fixture
-def second_order(first_order):
-    '''
-        UCID - dm767
-        Date - March 20, 2023
-    '''
-    first_order.handle_bun("lettuce wrap")
-    first_order.handle_patty("turkey")
-    first_order.handle_patty("next")
-    first_order.handle_toppings("cheese")
-    first_order.handle_toppings("done")
-    first_order.handle_pay(sum(first_order.inprogress_burger_price),"2.75")
+def second_order(machine, first_order):
+    machine.handle_bun("lettuce wrap")
+    machine.handle_patty("turkey")
+    machine.handle_patty("next")
+    machine.handle_toppings("cheese")
+    machine.handle_toppings("cheese")
+    machine.handle_toppings("done")
+    # machine.handle_pay(3,"3")
+    return machine
 
-    print("Test Case 2 Passed")
-    return first_order
+def test_production_line(second_order):
+    assert second_order is not None
 
-@pytest.fixture
-def third_order(second_order):
-    '''
-        UCID - dm767
-        Date - March 20, 2023
-    '''
-    second_order.handle_bun("no bun")
-    second_order.handle_patty("turkey")
-    second_order.handle_patty("next")
-    second_order.handle_toppings("cheese")
-    second_order.handle_toppings("done")
-    second_order.handle_pay(sum(second_order.inprogress_burger_price),"1.25")
-    print("Test Case 3 Passed")
-    return second_order
+def test_case_one(machine):
+    if machine.currently_selecting != STAGE.Bun:
+        assert False
+    else:
+        assert True
 
-@pytest.fixture
-def fourth_order(third_order):
-    '''
-        UCID - dm767
-        Date - March 20, 2023
-    '''
-    third_order.handle_bun("white burger bun")
-    third_order.handle_patty("veggie")
-    third_order.handle_patty("turkey")
-    third_order.handle_patty("beef")
-    third_order.handle_patty("next")
-    third_order.handle_toppings("cheese")
-    third_order.handle_toppings("done")
-    third_order.handle_pay(sum(third_order.inprogress_burger_price),"4.25")
-    print("Test Case 4 Passed")
-    return third_order
+def test_case_two(machine):
+    for f in machine.patties:
+        if f.name.lower() == "veggie":
+            assert f.in_stock()
 
-@pytest.fixture
-def fifth_order(fourth_order):
-    '''
-        UCID - dm767
-        Date - March 20, 2023
-    '''
-    fourth_order.handle_bun("lettuce wrap")
-    fourth_order.handle_patty("turkey")
-    fourth_order.handle_patty("next")
-    fourth_order.handle_toppings("bbq")
-    fourth_order.handle_toppings("cheese")
-    fourth_order.handle_toppings("mayo")
-    fourth_order.handle_toppings("done")
-    fourth_order.handle_pay(sum(fourth_order.inprogress_burger_price),"3.25")
-    print("Test Case 5 Passed")
-    return fourth_order
+def test_case_three(machine):
+    for f in machine.toppings:
+        if f.name.lower() == "cheese":
+            assert f.in_stock()
 
-@pytest.fixture
-def sixth_order(fifth_order):
-    '''
-        UCID - dm767
-        Date - March 20, 2023
-    '''
-    fifth_order.handle_bun("lettuce wrap")
-    fifth_order.handle_patty("turkey")
-    fifth_order.handle_patty("next")
-    fifth_order.handle_toppings("cheese")
-    fifth_order.handle_toppings("cheese")
-    fifth_order.handle_toppings("done")
-    fifth_order.handle_pay(sum(fifth_order.inprogress_burger_price),"3.0")
-    print("Test Case 6 Passed")
-    return fifth_order
+def test_case_four(machine):
+    if machine.remaining_patties <= 0:
+        assert False
+    else:
+        assert True
 
-@pytest.fixture
-def seventh_order(sixth_order):
-    '''
-        UCID - dm767
-        Date - March 20, 2023
-    '''
-    sixth_order.handle_bun("lettuce wrap")
-    sixth_order.handle_patty("turkey")
-    sixth_order.handle_patty("next")
-    sixth_order.handle_toppings("cheese")
-    sixth_order.handle_toppings("cheese")
-    sixth_order.handle_toppings("done")
-    sixth_order.handle_pay(sum(sixth_order.inprogress_burger_price),"3.0")
-    print("Test Case 7 Passed")
-    return sixth_order
+def test_case_five(machine):
+    if machine.remaining_toppings <= 0:
+        assert False
+    else:
+        assert True
 
-@pytest.fixture
-def eight_order(seventh_order):
-    '''
-        UCID - dm767
-        Date - March 20, 2023
-    '''
-    seventh_order.handle_bun("lettuce wrap")
-    seventh_order.handle_patty("turkey")
-    seventh_order.handle_patty("next")
-    seventh_order.handle_toppings("cheese")
-    seventh_order.handle_toppings("cheese")
-    seventh_order.handle_toppings("done")
-    return seventh_order
+def test_case_six(machine):
+    machine.inprogress_burger_price = [1, 1, 1, 1, .25, .25]
+    cost = machine.calculate_cost()
+    assert cost == 4.50
 
-def test_production_line(eight_order):
-    eight_order.handle_pay(sum(eight_order.inprogress_burger_price),"3.0")
-    print("Test Case 8 Passed")
+    machine.inprogress_burger_price = [1, 1, .25, .25]
+    cost = machine.calculate_cost()
+    assert cost == 2.50
+
+    machine.inprogress_burger_price = [0, 1, .25, .25]
+    cost = machine.calculate_cost()
+    assert cost == 1.50
+
+def test_case_seven(machine):
+    machine.currently_selecting = STAGE.Pay
+    machine.inprogress_burger_price = [1, 1, 1, 1, .25, .25]
+    machine.handle_pay(sum(machine.inprogress_burger_price), '4.5')
+
+    machine.currently_selecting = STAGE.Pay
+    machine.inprogress_burger_price = [1, 1, .25, .25]
+    machine.handle_pay(sum(machine.inprogress_burger_price), '2.5')
+
+    machine.currently_selecting = STAGE.Pay
+    machine.inprogress_burger_price = [0, 1, .25, .25]
+    machine.handle_pay(sum(machine.inprogress_burger_price), '1.5')
+
+    assert machine.total_sales == 8.50
+
+def test_case_eight(machine):
+    machine.currently_selecting = STAGE.Pay
+    machine.inprogress_burger_price = [1, 1, 1, 1, .25, .25]
+    machine.handle_pay(sum(machine.inprogress_burger_price), '4.5')
+
+    machine.currently_selecting = STAGE.Pay
+    machine.inprogress_burger_price = [1, 1, .25, .25]
+    machine.handle_pay(sum(machine.inprogress_burger_price), '2.5')
+
+    machine.currently_selecting = STAGE.Pay
+    machine.inprogress_burger_price = [0, 1, .25, .25]
+    machine.handle_pay(sum(machine.inprogress_burger_price), '1.5')
+
+    assert machine.total_burgers == 3
