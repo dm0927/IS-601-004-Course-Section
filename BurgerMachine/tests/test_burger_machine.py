@@ -36,15 +36,10 @@ def second_order(first_order):
     first_order.handle_bun("lettuce wrap")
     first_order.handle_patty("turkey")
     first_order.handle_patty("next")
-    first_order.handle_toppings("done")
-    first_order.handle_pay(sum(first_order.inprogress_burger_price),"2.5")
-
-    first_order.handle_bun("lettuce wrap")
-    first_order.handle_patty("veggie")
-    first_order.handle_patty("next")
     first_order.handle_toppings("cheese")
     first_order.handle_toppings("done")
     first_order.handle_pay(sum(first_order.inprogress_burger_price),"2.75")
+
     print("Test Case 2 Passed")
     return first_order
 

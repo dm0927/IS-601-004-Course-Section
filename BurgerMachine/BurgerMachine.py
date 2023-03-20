@@ -153,7 +153,7 @@ class BurgerMachine:
             print("Thank you! Enjoy your burger!")
             self.total_burgers += 1
             self.total_sales += expected # only if successful
-            print(f"Total sales so far {self.total_sales} for {self.total_burgers} burgers")
+            print(f"Total sales so far ${self.total_sales} for {self.total_burgers} burgers")
             self.reset()
         else:
             raise InvalidPaymentException
@@ -210,6 +210,7 @@ class BurgerMachine:
                 UCID - dm767
                 Date - March 20, 2023
             '''
+            print("The machine is not cleaned")
             t = input(f"Type clean to clean the machine:")
             if t == "clean":
                 self.clean_machine()

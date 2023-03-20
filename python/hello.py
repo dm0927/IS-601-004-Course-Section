@@ -23,3 +23,4 @@ this is a multi line comment
 
 # print(c)
 
+print(26**0)
