@@ -199,6 +199,9 @@ class BurgerMachine:
             # quit
             print("Quitting the burger machine")
             sys.exit()
+            
+        except InvalidStageException:
+            print("Invalid Stage")
         except OutOfStockException:
             '''
                 UCID - dm767
