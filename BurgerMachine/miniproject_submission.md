@@ -1,6 +1,6 @@
 <table><tr><td> <em>Assignment: </em> IS601 - Mini Project 2 - Burgers</td></tr>
 <tr><td> <em>Student: </em> Divya Rajesh Mehta (dm767)</td></tr>
-<tr><td> <em>Generated: </em> 3/20/2023 6:53:46 PM</td></tr>
+<tr><td> <em>Generated: </em> 3/27/2023 10:00:16 PM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/is601-mini-project-2-burgers/grade/dm767" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <ol><li>Create a new branch per the desired branch name below</li><li>Add the baseline files from the following link:&nbsp;<a href="https://gist.github.com/MattToegel/028db0e3fd2b20c1fb8e284b341292bb">https://gist.github.com/MattToegel/028db0e3fd2b20c1fb8e284b341292bb</a>&nbsp;</li><li>Put them into a subfolder in your repository folder (I called my folder BurgerMachine)</li><li>git add .</li><li>git commit -m "baseline files"</li><li>git push origin (name of desired branch below)</li><li>You can go to github and open the pull request for evidence capturing later (don't close/merge the pull request until you're done with the assignment)</li><li>Do the below tasks and fill in the below entries</li><ol><li>git add/commit after any significant changes to build up history</li></ol><li>Save the input and generate the submission markdown file (copy to clipboard or download the file)</li><li>Name it something relevant to the assignment if it's not named already</li><li>git add the submission file</li><li>git commit the submission file</li><li>git push the submission file</li><li>Complete the pull request to dev</li><li>Create a pull request from dev to prod</li><li>Go to the prod branch on github, navigate to the submission file</li><li>Paste that link to Canvas</li></ol></td></tr></table>
 <table><tr><td> <em>Deliverable 1: </em> Code Changes - Add the calculate_cost() implementation </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
@@ -38,31 +38,31 @@
 </table></td></tr>
 <table><tr><td> <em>Deliverable 3: </em> Test Cases </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Screenshot(s) of test cases per the checklist</td></tr>
-<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/226479422-8db90900-d3da-4c0b-82d4-8ed9e0dfb952.png"/></td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/228106514-0c572f18-2526-463e-b5d7-c08085847a69.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Test 1 - bun must be the first selection (can&#39;t add patties/toppings without<br>a bun choice)<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/226479481-ee980774-a19b-49de-8995-7f1baf01078d.png"/></td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/228106623-3295f776-23e4-4dbf-88df-d839b69595c7.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Test 2 - can only add patties if they&#39;re in stock<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/226479546-185b94a4-1c04-45fd-a20c-7e895c48a209.png"/></td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/228106663-9ab949ce-6ea6-4561-9b11-7d224351d520.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Test 3 - can only add toppings if they&#39;re in stock<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/226479630-b93e3cbe-f0b9-4105-9ae9-2f555731ba09.png"/></td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/228106728-de21b6b1-4f2f-4fcf-9a75-b363c1d32cce.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Test 4 - Can add up to 3 patties of any combination<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/226479692-6dd38c43-4eef-49e9-ae5c-1a0940a64bed.png"/></td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/228106840-51f00236-7f7a-48b7-8c78-9b66589b47f6.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Test 5 - Can add up to 3 toppings of any combination<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/226479855-74785b96-f458-4cda-84e4-dd553f215451.png"/></td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/228107031-200dfba8-7141-4df1-86f0-44153d4617ec.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Test 6 - cost must be calculated properly based on the choices (check<br>for currency format as part of this) (test case should have a few<br>permutations of at least 3 valid burgers)<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/226480076-abecf80b-e252-471b-8428-83700a0e1caa.png"/></td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/228107130-3d29d612-f6f9-4690-94cc-a8e2724e0bee.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Test 7 - Total Sales (sum of costs) must be calculated properly (test<br>case should have a few permutations of at least 3 valid burgers)<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/226480519-edfdc376-266d-4499-aa2d-d96921420dd2.png"/></td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/228107218-d1504916-741e-4073-82b9-4fc142d13791.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Test 8 - Total burgers should properly increment for each purchase<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/226480685-81c072fc-237a-4e80-8d52-1687c81a38d8.png"/></td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/228107346-52925eda-9d00-47f7-89d7-791f058dc301.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Show all Tests 1-8 passing and any relevant output (it should be clear<br>which test case is which) Best to use &#39;pytest -rA&#39; on the command<br>line<br></p>
 </td></tr>
 </table></td></tr>

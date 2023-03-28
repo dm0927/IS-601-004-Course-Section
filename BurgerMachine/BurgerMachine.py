@@ -49,7 +49,7 @@ class BurgerMachine:
     MAX_TOPPINGS = 3
 
 
-    buns = [Bun(name="No Bun", cost=0), Bun(name="White Burger Bun", cost=1), Bun("Wheat Burger Bun", cost=1.25),Bun("Lettuce Wrap", cost=1.5)]
+    buns = [Bun(name="No Bun", quantity=100, cost=0), Bun(name="White Burger Bun", cost=1), Bun("Wheat Burger Bun", cost=1.25),Bun("Lettuce Wrap", cost=1.5)]
     patties = [Patty(name="Turkey", quantity=10, cost=1), Patty(name="Veggie", quantity=10, cost=1), Patty(name="Beef", quantity=10, cost=1)]
     toppings = [Topping(name="Lettuce", quantity=10, cost=.25), Topping(name="Tomato", quantity=10, cost=.25), Topping(name="Pickles", quantity=10, cost=.25), \
     Topping(name="Cheese", quantity=10, cost=.25), Topping(name="Ketchup", quantity=10, cost=.25),
@@ -199,6 +199,9 @@ class BurgerMachine:
             # quit
             print("Quitting the burger machine")
             sys.exit()
+            
+        except InvalidStageException:
+            print("Invalid Stage")
         except OutOfStockException:
             '''
                 UCID - dm767
