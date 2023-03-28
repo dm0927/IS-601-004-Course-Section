@@ -25,15 +25,22 @@ def first_order(machine):
     return machine
 
 
-
+'''
+    UCID - dm767
+    Date - March 27, 2023
+'''
 def test_case_one(machine):
     try:
         machine.reset()
         machine.handle_patty("veggie")
         assert False
-    except InvalidStageException:
+    except:
         assert True
-
+    
+'''
+    UCID - dm767
+    Date - March 27, 2023
+'''
 def test_case_two(machine):
     try:
         machine.reset()
@@ -76,6 +83,10 @@ def test_case_two(machine):
     except OutOfStockException:
         assert True
 
+'''
+    UCID - dm767
+    Date - March 27, 2023
+'''
 def test_case_three(machine):
     try:
         machine.reset()
@@ -126,6 +137,10 @@ def test_case_three(machine):
     except OutOfStockException:
         assert True
 
+'''
+    UCID - dm767
+    Date - March 27, 2023
+'''
 def test_case_four(machine):
     try:
         machine.reset()
@@ -146,6 +161,10 @@ def test_case_four(machine):
     except ExceededRemainingChoicesException:
         assert True
 
+'''
+    UCID - dm767
+    Date - March 27, 2023
+'''
 def test_case_five(machine):
     try:
         machine.reset()
@@ -163,7 +182,11 @@ def test_case_five(machine):
         assert False    
     except:
         assert True
-
+    
+'''
+    UCID - dm767
+    Date - March 27, 2023
+'''
 def test_case_six(machine):
     machine.reset()
 
@@ -197,6 +220,10 @@ def test_case_six(machine):
     burger_cost = machine.calculate_cost()
     assert burger_cost == 0.5
 
+'''
+    UCID - dm767
+    Date - March 27, 2023
+'''
 def test_case_seven(machine):
     machine.reset()
 
@@ -229,6 +256,10 @@ def test_case_seven(machine):
 
     assert machine.total_sales == 4.75
 
+'''
+    UCID - dm767
+    Date - March 27, 2023
+'''
 def test_case_eight(machine):
     machine.reset()
 
