@@ -25,16 +25,6 @@ def first_order(machine):
     return machine
 
 
-# def test_topping_step(machine):
-#   machine.reset()
-#   machine.handle_bun("no bun")
-#   #skip handle_patty
-#   try:
-#     machine.handle_topping("lettuce")
-#   except:
-#     assert True
-#     return
-#   assert False
 
 def test_case_one(machine):
     try:
@@ -42,63 +32,56 @@ def test_case_one(machine):
         machine.handle_patty("veggie")
         assert False
     except InvalidStageException:
-        print("Invalid Stage")
         assert True
 
 def test_case_two(machine):
     try:
         machine.reset()
+
+        machine.handle_bun("no bun")
         machine.handle_patty("veggie")
+        machine.handle_patty("veggie")
+        machine.handle_patty("veggie")
+        machine.handle_patty("next")
+        machine.handle_toppings("done")
+        machine.handle_pay(3,"3")
+
+        machine.reset()
+
+        machine.handle_bun("no bun")
+        machine.handle_patty("veggie")
+        machine.handle_patty("veggie")
+        machine.handle_patty("veggie")
+        machine.handle_patty("next")
+        machine.handle_toppings("done")
+        machine.handle_pay(3,"3")
+
+        machine.reset()
+
+        machine.handle_bun("no bun")
+        machine.handle_patty("veggie")
+        machine.handle_patty("veggie")
+        machine.handle_patty("veggie")
+        machine.handle_patty("next")
+        machine.handle_toppings("done")
+        machine.handle_pay(3,"3")
+
+        machine.reset()
+
+        machine.handle_bun("no bun")
+        machine.handle_patty("veggie")
+        machine.handle_patty("veggie")
+
         assert False
-    except InvalidStageException:
-        print("Invalid Stage")
-        assert True
-
-def test_case_two(machine):
-    try:
-        machine.reset()
-
-        machine.handle_bun("no bun")
-        machine.handle_patty("veggie")
-        machine.handle_patty("veggie")
-        machine.handle_patty("veggie")
-        machine.handle_patty("next")
-        machine.handle_toppings("done")
-        machine.handle_pay(3,"3")
-
-        machine.reset()
-
-        machine.handle_bun("no bun")
-        machine.handle_patty("veggie")
-        machine.handle_patty("veggie")
-        machine.handle_patty("veggie")
-        machine.handle_patty("next")
-        machine.handle_toppings("done")
-        machine.handle_pay(3,"3")
-
-        machine.reset()
-
-        machine.handle_bun("no bun")
-        machine.handle_patty("veggie")
-        machine.handle_patty("veggie")
-        machine.handle_patty("veggie")
-        machine.handle_patty("next")
-        machine.handle_toppings("done")
-        machine.handle_pay(3,"3")
-
-        machine.reset()
-
-        assert True
     except OutOfStockException:
-        print("Veggie Not avaiable")
-        assert False
+        assert True
 
 def test_case_three(machine):
     try:
         machine.reset()
 
         machine.handle_bun("no bun")
-        machine.handle_patty("veggie")
+        machine.handle_patty("turkey")
         machine.handle_patty("next")
         machine.pick_toppings("cheese")
         machine.pick_toppings("cheese")
@@ -106,10 +89,42 @@ def test_case_three(machine):
         machine.handle_toppings("done")
         machine.handle_pay(3,"3")
 
-        assert True
-    except OutOfStockException:
-        print("Toppings Not avaiable")
+        machine.reset()
+
+        machine.handle_bun("no bun")
+        machine.handle_patty("turkey")
+        machine.handle_patty("next")
+        machine.pick_toppings("cheese")
+        machine.pick_toppings("cheese")
+        machine.pick_toppings("cheese")
+        machine.handle_toppings("done")
+        machine.handle_pay(3,"3")
+
+        machine.reset()
+
+        machine.handle_bun("no bun")
+        machine.handle_patty("turkey")
+        machine.handle_patty("next")
+        machine.pick_toppings("cheese")
+        machine.pick_toppings("cheese")
+        machine.pick_toppings("cheese")
+        machine.handle_toppings("done")
+        machine.handle_pay(3,"3")
+
+        machine.reset()
+
+        machine.handle_bun("no bun")
+        machine.handle_patty("turkey")
+        machine.handle_patty("next")
+        machine.pick_toppings("cheese")
+        machine.pick_toppings("cheese")
+        machine.pick_toppings("cheese")
+        machine.handle_toppings("done")
+        machine.handle_pay(3,"3")
+
         assert False
+    except OutOfStockException:
+        assert True
 
 def test_case_four(machine):
     try:
@@ -117,7 +132,8 @@ def test_case_four(machine):
 
         machine.handle_bun("no bun")
         machine.handle_patty("beef")
-        machine.handle_patty("turkey")
+        machine.handle_patty("beef")
+        machine.handle_patty("beef")
         machine.handle_patty("beef")
         machine.handle_patty("next")
         machine.pick_toppings("cheese")
@@ -126,9 +142,9 @@ def test_case_four(machine):
         machine.handle_toppings("done")
         machine.handle_pay(3,"3")
 
-        assert True
-    except:
         assert False
+    except ExceededRemainingChoicesException:
+        assert True
 
 def test_case_five(machine):
     try:
@@ -136,15 +152,111 @@ def test_case_five(machine):
 
         machine.handle_bun("no bun")
         machine.handle_patty("beef")
-        machine.handle_patty("turkey")
-        machine.handle_patty("beef")
         machine.handle_patty("next")
+        machine.pick_toppings("bbq")
         machine.pick_toppings("bbq")
         machine.pick_toppings("mustard")
         machine.pick_toppings("ketchup")
         machine.handle_toppings("done")
         machine.handle_pay(3,"3")
 
-        assert True
+        assert False    
     except:
-        assert False
+        assert True
+
+def test_case_six(machine):
+    machine.reset()
+
+    machine.handle_bun("no bun")
+    machine.handle_patty("beef")
+    machine.handle_patty("next")
+    machine.pick_toppings("bbq")
+    machine.pick_toppings("ketchup")
+    machine.handle_toppings("done")
+    burger_cost = machine.calculate_cost()
+    assert burger_cost == 1.5
+
+    machine.reset()
+
+    machine.handle_bun("no bun")
+    machine.handle_patty("beef")
+    machine.handle_patty("next")
+    machine.pick_toppings("bbq")
+    machine.pick_toppings("ketchup")
+    machine.handle_toppings("done")
+    burger_cost = machine.calculate_cost()
+    assert burger_cost == 1.5
+
+    machine.reset()
+
+    machine.handle_bun("no bun")
+    machine.handle_patty("next")
+    machine.pick_toppings("bbq")
+    machine.pick_toppings("ketchup")
+    machine.handle_toppings("done")
+    burger_cost = machine.calculate_cost()
+    assert burger_cost == 0.5
+
+def test_case_seven(machine):
+    machine.reset()
+
+    machine.handle_bun("white burger bun")
+    machine.handle_patty("next")
+    machine.pick_toppings("mayo")
+    machine.handle_toppings("done")
+    burger_cost = machine.calculate_cost()
+    machine.handle_pay(burger_cost,"1.25")
+
+    machine.reset()
+
+    machine.handle_bun("white burger bun")
+    machine.handle_patty("beef")
+    machine.handle_patty("next")
+    machine.pick_toppings("bbq")
+    machine.pick_toppings("mustard")
+    machine.handle_toppings("done")
+    burger_cost = machine.calculate_cost()
+    machine.handle_pay(burger_cost,"2.5")
+
+    machine.reset()
+
+    machine.handle_bun("no bun")
+    machine.handle_patty("beef")
+    machine.handle_patty("next")
+    machine.handle_toppings("done")
+    burger_cost = machine.calculate_cost()
+    machine.handle_pay(burger_cost,"1")
+
+    assert machine.total_sales == 4.75
+
+def test_case_eight(machine):
+    machine.reset()
+
+    machine.handle_bun("no bun")
+    machine.handle_patty("next")
+    machine.pick_toppings("mayo")
+    machine.handle_toppings("done")
+    burger_cost = machine.calculate_cost()
+    machine.handle_pay(burger_cost,"0.25")
+
+    machine.reset()
+
+    machine.handle_bun("no bun")
+    machine.handle_patty("beef")
+    machine.handle_patty("next")
+    machine.pick_toppings("bbq")
+    machine.pick_toppings("mustard")
+    machine.handle_toppings("done")
+    burger_cost = machine.calculate_cost()
+    machine.handle_pay(burger_cost,"1.5")
+
+    machine.reset()
+
+    machine.handle_bun("no bun")
+    machine.handle_patty("beef")
+    machine.handle_patty("next")
+    machine.handle_toppings("done")
+    burger_cost = machine.calculate_cost()
+    machine.handle_pay(burger_cost,"1")
+
+    assert machine.total_burgers == 3
