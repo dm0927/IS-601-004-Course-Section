@@ -22,7 +22,7 @@
                 <label class="visually-hidden" for="company">Company</label>
                 {{company_dropdown(request.args.get("company"))}}
             </div>
-            {{sort_filter(cols=[...])}}
+            {{sort_filter(cols=[])}}
             <div class="col">
                 <input type="submit" class="btn btn-primary" value="Filter" />
             </div>
@@ -37,7 +37,12 @@
             <tr class="text-capitalize">
                 {# generate th tags for each column to display #}
                 {# IMPORTANT use table column names as the headings, replace _ with space via filter #}
-
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Company Id</th>
+                <th>Company Name</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -47,7 +52,17 @@
             an edit button that passes the employee id to employee edit
             a delete button that passes the employee id and the request args to the employee delete route
             #}
-
+            {% for row in rows %}
+                <tr>
+                    <td>{{row['id']}}</td>
+                    <td>{{row['first_name']}}</td>
+                    <td>{{row['last_name']}}</td>
+                    <td>{{row['email']}}</td>
+                    <td>{{row['company_id']}}</td>
+                    <td>{{row['company_name']}}</td>
+                    <td><a href="#">Edit</a> <a href="#">Delete</a></td>
+                </tr>
+            {% endfor %}
         </tbody>
         {% else %}
         <tbody>

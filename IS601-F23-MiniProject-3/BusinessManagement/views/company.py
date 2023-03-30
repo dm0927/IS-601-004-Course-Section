@@ -9,7 +9,11 @@ def search():
     # TODO search-1 retrieve id, name, address, city, country, state, zip, website, employee count as employees for the company
     # don't do SELECT *
     
-    query = "... WHERE 1=1"
+    query = '''select c.id, c.name, c.address, c.city, c.country, c.state, c.zip, c.website, count(e.id) as employees
+               from IS601_MP3_Companies as c
+               left join IS601_MP3_Employees as e on e.company_id = c.id
+               where 1=1
+               group by c.id'''
     args = {} # <--- add values to replace %s/%(named)s placeholders
     allowed_columns = ["name", "city", "country", "state"]
     # TODO search-2 get name, country, state, column, order, limit request args
@@ -38,7 +42,6 @@ def search():
     # hint: use allowed_columns in template to generate sort dropdown
     # hint2: convert allowed_columns into a list of tuples representing (value, label)
     # do this prior to passing to render_template, but not before otherwise it can break validation
-    
     return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns)
 
 @company.route("/add", methods=["GET","POST"])

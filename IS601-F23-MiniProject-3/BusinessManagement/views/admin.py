@@ -3,6 +3,8 @@ from flask import Blueprint, render_template, request, redirect, flash
 from werkzeug.utils import secure_filename
 from sql.db import DB
 import traceback
+import csv
+
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 @admin.route("/import", methods=["GET","POST"])
@@ -16,7 +18,13 @@ def importCSV():
         if file.filename == '':
             flash('No selected file', "warning")
             return redirect(request.url)
+        getExtension = file.filename.split(".")[1]
+
         # TODO importcsv-1 check that it's a .csv file, return a proper flash message if it's not
+        if getExtension != "csv":
+            flash('Can only submit csv files', "warning")
+            return redirect(request.url)
+        
         if file and secure_filename(file.filename):
             companies = []
             employees = []
@@ -43,40 +51,59 @@ def importCSV():
             # Note: this reads the file as a stream instead of requiring us to save it
             stream = io.TextIOWrapper(file.stream._file, "UTF8", newline=None)
             # TODO importcsv-2 read the csv file stream as a dict
-            
-            for row in ...:
-                pass # todo remove
+            readerData = csv.DictReader(stream)
+        
+            for row in readerData:
+                # pass # todo remove
                 # print(row) #example
                 # TODO importcsv-3 extract company data and append to company list 
                 # as a dict only with company data if all is present
-                
+                companyData = {
+                    'name' : row['company_name'],
+                    'address' : row['address'],
+                    'city' : row['city'],
+                    'country' : row['country'],
+                    'state' : row['state'],
+                    'zip' : row['zip'],
+                    'website' : row['web']
+                }
+
                 # TODO importcsv-4 extract employee data and append to employee list 
                 # as a dict only with employee data if all is present
-                
-               
-               
+                employeeData = {
+                    'first_name' : row['first_name'],
+                    'last_name' : row['last_name'],
+                    'email' : row['email'],
+                    'company_name' : row['company_name']
+                }
+                companies.append(companyData)
+                employees.append(employeeData)
+
             if len(companies) > 0:
                 print(f"Inserting or updating {len(companies)} companies")
                 try:
                     result = DB.insertMany(company_query, companies)
                     # TODO importcsv-5 display flash message about number of companies inserted
+                    flash(f'A total of {len(companies)} is inserted into database', "success")
                 except Exception as e:
                     traceback.print_exc()
                     flash("There was an error loading in the csv data", "danger")
             else:
                 # TODO importcsv-6 display flash message (info) that no companies were loaded
-                pass
+                flash("No company data available", "info")
             if len(employees) > 0:
                 print(f"Inserting or updating {len(employees)} employees")
                 try:
                     result = DB.insertMany(employee_query, employees)
                     # TODO importcsv-7 display flash message about number of employees loaded
+                    flash(f'A total of {len(employees)} is inserted into database', "success")
                 except Exception as e:
                     traceback.print_exc()
                     flash("There was an error loading in the csv data", "danger")
             else:
                  # TODO importcsv-8 display flash message (info) that no companies were loaded
-                pass
+                # pass
+                flash("No employees were found", "info")
             try:
                 result = DB.selectOne("SHOW SESSION STATUS LIKE 'questions'")
                 print(f"Result {result}")

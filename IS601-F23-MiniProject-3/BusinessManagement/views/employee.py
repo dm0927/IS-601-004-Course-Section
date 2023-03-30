@@ -8,8 +8,12 @@ def search():
     rows = []
     # DO NOT DELETE PROVIDED COMMENTS
     # TODO search-1 retrieve employee id as id, first_name, last_name, email, company_id, company_name using a LEFT JOIN
-    query = """SELECT ...
-     FROM ... LEFT JOIN ... WHERE 1=1"""
+    query = """
+                SELECT e.id, e.first_name, e.last_name, e.email, e.company_id, c.name as company_name 
+                FROM IS601_MP3_Employees as e
+                LEFT JOIN IS601_MP3_Companies as c on c.id = e.company_id
+                WHERE 1=1
+            """
     args = {} # <--- add values to replace %s/%(named)s placeholders
     allowed_columns = ["first_name", "last_name", "email", "company_name"]
     # TODO search-2 get fn, ln, email, company, column, order, limit from request args

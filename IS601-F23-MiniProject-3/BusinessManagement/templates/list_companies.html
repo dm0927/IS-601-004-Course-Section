@@ -16,7 +16,7 @@
     <form method="GET">
         <div class="row">
             {{country_state_selector(layout="horizontal")}}
-            {{sort_filter(cols=[...])}}
+            {#{sort_filter(cols=[...])}#}
             <div class="col">
                 <input type="submit" class="btn btn-primary" value="Filter" />
             </div>
@@ -25,14 +25,22 @@
             </div>
         </div>
     </form>
-    <div class="table-responsive">
+    <div class="table-responsive mt-3">
         <table class="table">
             {% if rows and rows|length > 0 %}
             <thead>
                 <tr class="text-capitalize">
                     {# generate th tags for each column to display #}
                     {# IMPORTANT use table column names as the headings, replace _ with space via filter #}
-
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>Zip</th>
+                    <th>Website</th>
+                    <th>Employees</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -46,7 +54,20 @@
                 an edit button that passes the company id to company edit
                 a delete button that passes the company id and the request args to the company delete route
                 #}
-
+                {% for row in rows %}
+                    <tr>
+                        <td>{{row['id']}}</td>
+                        <td>{{row['name']}}</td>
+                        <td>{{row['address']}}</td>
+                        <td>{{row['city']}}</td>
+                        <td>{{row['country']}}</td>
+                        <td>{{row['state']}}</td>
+                        <td>{{row['zip']}}</td>
+                        <td><a href="{{row['website']}}" target="_blank">Website</a></td>
+                        <td>{{row['employees']}}</td>
+                        <td><a href="#">Edit</a> <a href="#">Delete</a></td>
+                    </tr>
+                {% endfor %}
             </tbody>
             {% else %}
             <tbody>
