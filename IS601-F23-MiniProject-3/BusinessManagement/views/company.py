@@ -35,7 +35,7 @@ def search():
         #print(f"result {result.rows}")
         if result.status:
             rows = result.rows
-            print(f"rows {rows}")
+            # print(f"rows {rows}")
     except Exception as e:
         # TODO search-9 make message user friendly
         flash(str(e), "danger")
@@ -46,39 +46,68 @@ def search():
 
 @company.route("/add", methods=["GET","POST"])
 def add():
+    form = {}
     if request.method == "POST":
         # TODO add-1 retrieve form data for name, address, city, state, country, zip, website
-        # TODO add-2 name is required (flash proper error message)
-        # TODO add-3 address is required (flash proper error message)
-        # TODO add-4 city is required (flash proper error message)
-        # TODO add-5 state is required (flash proper error message)
-        # TODO add-5a state should be a valid state mentioned in pycountry for the selected state
-        # hint see geography.py and pycountry documentation
-        # TODO add-6 country is required (flash proper error message)
-        # TODO add-6a country should be a valid country mentioned in pycountry
-        # hint see geography.py and pycountry documentation
-        # TODO add-7 website is not required
-        # TODO add-8 zipcode is required (flash proper error message)
-        # note: call zip variable zipcode as zip is a built in function it could lead to issues
+        companyname = request.form['companyname']
+        companyaddress = request.form['companyaddress']
+        country = request.form['country']
+        state = request.form['state']
+        city = request.form['city']
+        companyzipcode = request.form['companyzipcode']
+        companywebsite = request.form['companywebsite']
 
-        has_error = False # use this to control whether or not an insert occurs
+        '''
+            Done
+
+            # TODO add-2 name is required (flash proper error message)
+            # TODO add-3 address is required (flash proper error message)
+            # TODO add-8 zipcode is required (flash proper error message)
+
+            Left Out
+
+            # TODO add-4 city is required (flash proper error message)
+            # TODO add-5 state is required (flash proper error message)
+            # TODO add-5a state should be a valid state mentioned in pycountry for the selected state
+            # hint see geography.py and pycountry documentation
+            # TODO add-6 country is required (flash proper error message)
+            # TODO add-6a country should be a valid country mentioned in pycountry
+            # hint see geography.py and pycountry documentation
+            # TODO add-7 website is not required
+            # note: call zip variable zipcode as zip is a built in function it could lead to issues
+        '''
         
+        has_error = False # use this to control whether or not an insert occurs
+
+        if companyname == "":
+            flash("Company Name Required", "warning")
+            has_error = True
+        if companyaddress == "":
+            flash("Company Address Required", "warning")
+            has_error = True
+        if city == "":
+            flash("City Name Required", "warning")
+            has_error = True
+        if companyzipcode == "":
+            flash("Company Zipcode Required", "warning")
+            has_error = True
 
         if not has_error:
             try:
                 result = DB.insertOne("""
-                INSERT INTO ...
-                ...
-                VALUES
-                ...
-                """, ...) # <-- TODO add-8 add query and add arguments
+                INSERT INTO IS601_MP3_Companies(name,address,city,country,state,zip,website)
+                VALUES(%s,%s,%s,%s,%s,%s,%s)
+                """, companyname, companyaddress, city, country, state, companyzipcode, companywebsite) # <-- TODO add-8 add query and add arguments
                 if result.status:
                     flash("Added Company", "success")
             except Exception as e:
                 # TODO add-9 make message user friendly
                 flash(str(e), "danger")
+        else:
+            form = request.form
+            
         
-    return render_template("add_company.html")
+    return render_template("add_company.html", form=form)
 
 @company.route("/edit", methods=["GET", "POST"])
 def edit():
