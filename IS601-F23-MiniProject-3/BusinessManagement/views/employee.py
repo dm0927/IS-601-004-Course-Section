@@ -11,7 +11,7 @@ def search():
     query = """
                 SELECT e.id, e.first_name, e.last_name, e.email, e.company_id, c.name as company_name 
                 FROM IS601_MP3_Employees as e
-                LEFT JOIN IS601_MP3_Companies as c on c.id = e.company_id
+                JOIN IS601_MP3_Companies as c on c.id = e.company_id
                 WHERE 1=1
             """
     args = {} # <--- add values to replace %s/%(named)s placeholders
@@ -24,8 +24,35 @@ def search():
     # TODO search-7 append sorting if column and order are provided and within the allowed columns and order options (asc, desc)
     # TODO search-8 append limit (default 10) or limit greater than 1 and less than or equal to 100
     # TODO search-9 provide a proper error message if limit isn't a number or if it's out of bounds
-
+    
     limit = 10 # TODO change this per the above requirements
+    if request.args.get('fn'):
+        fn = request.args.get('fn')
+        query += " and first_name like %(fn)s"
+        args['fn'] = "%"+fn+"%"
+    if request.args.get('ln'):
+        ln = request.args.get('ln')
+        query += " and last_name like %(ln)s"
+        args['ln'] = "%"+ln+"%"
+    if request.args.get('email'):
+        email = request.args.get('email')
+        query += " and email like %(email)s"
+        args['email'] = "%"+email+"%"
+    if request.args.get('company'):
+        company_id = int(request.args.get('company'))
+        query += " and company_id = %(company_id)s"
+        args['company_id'] = company_id
+    templimit = int(request.args.get('limit', 10))
+    if templimit and (templimit >= 10 and templimit <= 100):
+        limit = templimit
+    if request.args.get('column') and request.args.get('column') != "":
+        column = request.args.get('column')
+        order = request.args.get('order')
+        if column in allowed_columns and order in ['asc', 'desc']:
+            if column == "company_name":
+                query += f" order by c.name {order}"
+            else:
+                query += f" order by {column} {order}"
     query += " LIMIT %(limit)s"
     args["limit"] = limit
     print("query",query)
@@ -40,7 +67,7 @@ def search():
     # hint: use allowed_columns in template to generate sort dropdown
     # hint2: convert allowed_columns into a list of tuples representing (value, label)
     # do this prior to passing to render_template, but not before otherwise it can break validation
-   
+    allowed_columns = list(zip(allowed_columns,allowed_columns))
     return render_template("list_employees.html", rows=rows, allowed_columns=allowed_columns)
 
 @employee.route("/add", methods=["GET","POST"])
@@ -70,9 +97,13 @@ def add():
 @employee.route("/edit", methods=["GET", "POST"])
 def edit():
     # TODO edit-1 request args id is required (flash proper error message)
-    id = False
-    if not id: # TODO update this for TODO edit-1
-        pass
+    try:
+        id = request.args['id']
+    except:
+        id = ""
+    if id == "": # TODO update this for TODO edit-1
+        flash("No Company Id Availble.", "warning")
+        return redirect(url_for('company.search'))
     else:
         if request.method == "POST":
             
@@ -101,19 +132,17 @@ def edit():
         row = {}
         try:
             # TODO edit-8 fetch the updated data 
-            result = DB.selectOne("""SELECT 
-            ...
-            FROM ... LEFT JOIN ... 
-              
-              WHERE ..."""
-            , id)
-            if result.status:
+            result = DB.selectOne("""SELECT e.first_name, e.last_name, e.email, e.company_id as company FROM IS601_MP3_Employees as e WHERE e.id = %s""",id)
+            if result.status and result.row:
                 row = result.row
+            else:
+                flash("No Employee Data Available.", "warning")
+                return redirect(url_for('employee.search'))
         except Exception as e:
             # TODO edit-9 make this user-friendly
             flash(str(e), "danger")
     # TODO edit-10 pass the employee data to the render template
-    return render_template("edit_employee.html", ...)
+    return render_template("edit_employee.html", employee=row)
 
 @employee.route("/delete", methods=["GET"])
 def delete():

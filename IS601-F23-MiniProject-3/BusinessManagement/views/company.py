@@ -13,7 +13,7 @@ def search():
                from IS601_MP3_Companies as c
                left join IS601_MP3_Employees as e on e.company_id = c.id
                where 1=1
-               group by c.id'''
+               '''
     args = {} # <--- add values to replace %s/%(named)s placeholders
     allowed_columns = ["name", "city", "country", "state"]
     # TODO search-2 get name, country, state, column, order, limit request args
@@ -24,8 +24,30 @@ def search():
     # TODO search-7 append limit (default 10) or limit greater than 1 and less than or equal to 100
     # TODO search-8 provide a proper error message if limit isn't a number or if it's out of bounds
     
-
     limit = 10 # TODO change this per the above requirements
+    if request.args.get('name'):
+        name = request.args.get('name')
+        query += " and name like %(name)s"
+        args['name'] = "%"+name+"%"
+    if request.args.get('country'):
+        country = request.args.get('country')
+        query += " and country = %(country)s"
+        args['country'] = country
+    if request.args.get('state'):
+        state = request.args.get('state')
+        query += " and state = %(state)s"
+        args['state'] = state
+    templimit = int(request.args.get('limit', 10))
+    if templimit and (templimit >= 10 and templimit <= 100):
+        limit = templimit
+    else:
+        flash("Limit should be between 10 and 100", "warning")
+    query += " group by c.id"
+    if request.args.get('column') and request.args.get('column') != "":
+        column = request.args.get('column')
+        order = request.args.get('order')
+        if column in allowed_columns and order in ['asc', 'desc']:
+            query += f" order by {column} {order}"
     query += " LIMIT %(limit)s"
     args["limit"] = limit
     print("query",query)
@@ -42,6 +64,7 @@ def search():
     # hint: use allowed_columns in template to generate sort dropdown
     # hint2: convert allowed_columns into a list of tuples representing (value, label)
     # do this prior to passing to render_template, but not before otherwise it can break validation
+    allowed_columns = list(zip(allowed_columns,allowed_columns))
     return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns)
 
 @company.route("/add", methods=["GET","POST"])
@@ -49,13 +72,13 @@ def add():
     form = {}
     if request.method == "POST":
         # TODO add-1 retrieve form data for name, address, city, state, country, zip, website
-        companyname = request.form['companyname']
-        companyaddress = request.form['companyaddress']
-        country = request.form['country']
-        state = request.form['state']
-        city = request.form['city']
-        companyzipcode = request.form['companyzipcode']
-        companywebsite = request.form['companywebsite']
+        companyname = request.form.get('name', "")
+        companyaddress = request.form.get('address', "")
+        country = request.form.get('country', "")
+        state = request.form.get('state', "")
+        city = request.form.get('city', "")
+        companyzipcode = request.form.get('zip', "")
+        companywebsite = request.form.get('website', "")
 
         '''
             Done
@@ -105,16 +128,18 @@ def add():
                 flash(str(e), "danger")
         else:
             form = request.form
-            
-        
     return render_template("add_company.html", form=form)
 
 @company.route("/edit", methods=["GET", "POST"])
 def edit():
     # TODO edit-1 request args id is required (flash proper error message)
-    id = False
-    if not id: # TODO update this for TODO edit-1
-        pass
+    try:
+        id = request.args['id']
+    except:
+        id = ""
+    if id == "": # TODO update this for TODO edit-1
+        flash("No Company Id Availble.", "warning")
+        return redirect(url_for('company.search'))
     else:
         if request.method == "POST":
             data = {"id": id} # use this as needed, can convert to tuple if necessary
@@ -155,15 +180,18 @@ def edit():
         row = {}
         try:
             # TODO edit-11 fetch the updated data
-            result = DB.selectOne("SELECT ... FROM ... WHERE ...", id)
-            if result.status:
+            result = DB.selectOne("SELECT name, address, city, country, state, zip, website FROM IS601_MP3_Companies WHERE id=%s", id)
+            if result.status and result.row:
                 row = result.row
+            else:
+                flash("No Company Data Available.", "warning")
+                return redirect(url_for('company.search'))
                 
         except Exception as e:
             # TODO edit-12 make this user-friendly
             flash(str(e), "danger")
     # TODO edit-13 pass the company data to the render template
-    return render_template("edit_company.html", ...)
+    return render_template("edit_company.html", company=row)
 
 @company.route("/delete", methods=["GET"])
 def delete():
@@ -173,5 +201,13 @@ def delete():
     # TODO delete-4 ensure a flash message shows for successful delete
     # TODO delete-5 for all employees assigned to this company set their company_id to None/null
     # TODO delete-6 if id is missing, flash necessary message and redirect to search
-    pass
+    try:
+        id = request.args['id']
+    except:
+        id = ""
+    if id != "":
+        pass
+    else:
+        flash("No Id Found", "warning")
+        return redirect(url_for('company.search'))
     

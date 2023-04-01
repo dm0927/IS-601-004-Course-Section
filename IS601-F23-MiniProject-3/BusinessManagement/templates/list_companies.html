@@ -15,13 +15,17 @@
     #}
     <form method="GET">
         <div class="row">
-            {{country_state_selector(layout="horizontal")}}
-            {#{sort_filter(cols=[...])}#}
             <div class="col">
-                <input type="submit" class="btn btn-primary" value="Filter" />
+                <input type="text" class="form-control" id="name" placeholder="Company Name" name="name" value="{{request.args.get('name','')}}">
+            </div>
+            {{country_state_selector(layout="horizontal")}}
+            {{sort_filter(cols=allowed_columns)}}
+            <div class="col">
+                <input type="text" class="form-control" id="name" placeholder="Company Limit" name="limit" value="{{request.args.get('limit',10)}}">
             </div>
             <div class="col">
-                <a href="?" class="btn btn-secondary">Reset</a>
+                <input type="submit" class="btn btn-primary" value="Filter" />
+                <a href="{{url_for('company.search')}}" class="btn btn-secondary">Reset</a>
             </div>
         </div>
     </form>
@@ -65,7 +69,7 @@
                         <td>{{row['zip']}}</td>
                         <td><a href="{{row['website']}}" target="_blank">Website</a></td>
                         <td>{{row['employees']}}</td>
-                        <td><a href="#">Edit</a> <a href="#">Delete</a></td>
+                        <td><a href="{{url_for('company.edit')}}?id={{row['id']}}">Edit</a> <a href="{{url_for('company.delete')}}?id={{row['id']}}">Delete</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

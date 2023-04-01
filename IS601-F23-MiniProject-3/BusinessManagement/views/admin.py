@@ -58,26 +58,28 @@ def importCSV():
                 # print(row) #example
                 # TODO importcsv-3 extract company data and append to company list 
                 # as a dict only with company data if all is present
-                companyData = {
-                    'name' : row['company_name'],
-                    'address' : row['address'],
-                    'city' : row['city'],
-                    'country' : row['country'],
-                    'state' : row['state'],
-                    'zip' : row['zip'],
-                    'website' : row['web']
-                }
+                if row['company_name'] != "" and row['address'] != "" and row['city'] != "" and row['country'] != "" and row['state'] != "" and row['zip'] != "":
+                    companyData = {
+                        'name' : row['company_name'],
+                        'address' : row['address'],
+                        'city' : row['city'],
+                        'country' : row['country'],
+                        'state' : row['state'],
+                        'zip' : row['zip'],
+                        'website' : row['web']
+                    }
+                    companies.append(companyData)
 
                 # TODO importcsv-4 extract employee data and append to employee list 
                 # as a dict only with employee data if all is present
-                employeeData = {
-                    'first_name' : row['first_name'],
-                    'last_name' : row['last_name'],
-                    'email' : row['email'],
-                    'company_name' : row['company_name']
-                }
-                companies.append(companyData)
-                employees.append(employeeData)
+                if row['first_name'] != "" and row['last_name'] != "" and row['email'] != "":
+                    employeeData = {
+                        'first_name' : row['first_name'],
+                        'last_name' : row['last_name'],
+                        'email' : row['email'],
+                        'company_name' : row['company_name']
+                    }
+                    employees.append(employeeData)
 
             if len(companies) > 0:
                 print(f"Inserting or updating {len(companies)} companies")
