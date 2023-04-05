@@ -72,6 +72,7 @@ def search():
 
 @employee.route("/add", methods=["GET","POST"])
 def add():
+    form = {}
     if request.method == "POST":
         # TODO add-1 retrieve form data for first_name, last_name, company, email
         # TODO add-2 first_name is required (flash proper error message)
@@ -80,19 +81,41 @@ def add():
         # TODO add-5 email is required (flash proper error message)
         # TODO add-5a verify email is in the correct format
         has_error = False # use this to control whether or not an insert occurs
-            
+
+        first_name = request.form.get('first_name', "")
+        last_name = request.form.get('last_name', "")
+        email = request.form.get('email', "")
+        company = request.form.get('company', None)
+        
+        if first_name == "":
+                flash("First Name is Required", "warning")
+                has_error = True
+        if last_name == "":
+            flash("Last Name is Required", "warning")
+            has_error = True
+        if email == "":
+            flash("Email is Required", "warning")
+            has_error = True
+                
         if not has_error:
             try:
-                result = DB.insertOne("""
-                INSERT INTO ...
-                """, ...
-                ) # <-- TODO add-6 add query and add arguments
+                if company == "":
+                    result = DB.insertOne("""
+                    INSERT INTO IS601_MP3_Employees(first_name, last_name, email)
+                    VALUES(%s, %s, %s)""", first_name, last_name, email) # <-- TODO add-6 add query and add arguments
+                else:
+                    result = DB.insertOne("""
+                    INSERT INTO IS601_MP3_Employees(first_name, last_name, email, company_id)
+                    VALUES(%s, %s, %s, %s)""", first_name, last_name, email, company) # <-- TODO add-6 add query and add arguments
                 if result.status:
                     flash("Created Employee Record", "success")
             except Exception as e:
+                form = request.form
                 # TODO add-7 make message user friendly
                 flash(str(e), "danger")
-    return render_template("add_employee.html")
+        else:
+            form = request.form
+    return render_template("add_employee.html", form=form)
 
 @employee.route("/edit", methods=["GET", "POST"])
 def edit():
@@ -115,15 +138,34 @@ def edit():
             # TODO edit-5a verify email is in the correct format
             has_error = False # use this to control whether or not an insert occurs
 
-            
+            first_name = request.form.get('first_name', "")
+            last_name = request.form.get('last_name', "")
+            email = request.form.get('email', "")
+            company = request.form.get('company', None)
+
+            if first_name == "":
+                flash("First Name is Required", "warning")
+                has_error = True
+            if last_name == "":
+                flash("Last Name is Required", "warning")
+                has_error = True
+            if email == "":
+                flash("Email is Required", "warning")
+                has_error = True
                 
             if not has_error:
                 try:
                     # TODO edit-6 fill in proper update query
-                    result = DB.update("""
-                    UPDATE ... SET
-                    ...
-                    """, ...)
+                    if company == "":
+                        result = DB.update("""
+                                    UPDATE IS601_MP3_Employees SET first_name = %s, last_name = %s, email = %s
+                                    where id = %s
+                                    """, first_name, last_name, email, id)
+                    else:
+                        result = DB.update("""
+                                    UPDATE IS601_MP3_Employees SET first_name = %s, last_name = %s, email = %s, company_id = %s
+                                    where id = %s
+                                    """, first_name, last_name, email, company, id)
                     if result.status:
                         flash("Updated record", "success")
                 except Exception as e:
@@ -151,4 +193,18 @@ def delete():
     # TODO delete-3 pass all argument except id to this route
     # TODO delete-4 ensure a flash message shows for successful delete
     # TODO delete-5 if id is missing, flash necessary message and redirect to search
-    pass
+    try:
+        id = request.args['id']
+    except:
+        id = ""
+    if id != "":
+        try:
+            result = DB.delete("""DELETE FROM IS601_MP3_Employees where id=%s """, id)
+            if result.status:
+                flash("Employee Data Deleted", "success")
+        except Exception as e:
+            # TODO edit-12 make this user-friendly
+            flash("Something wen't wrong, please try again later", "danger")
+    else:
+        flash("No Id Found", "warning")
+    return redirect(url_for('employee.search'))

@@ -17,18 +17,18 @@
             {# use the below for company selection #}
             <div class="row col-md-12">
                 <div class="mb-3 col-md-6">
-                    <label for="firstname" class="form-label">First Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="firstname" placeholder="First Name">
+                    <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" value="{{ form['first_name'] if form else '' }}" required>
                 </div>
                 <div class="mb-3 col-md-6">
-                    <label for="lastname" class="form-label">Last Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="lastname" placeholder="Last Name">
+                    <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" value="{{ form['last_name'] if form else '' }}" required>
                 </div>
             </div>
             <div class="row col-md-12">
                 <div class="mb-3 col-md-6">
                     <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="email" placeholder="Email Address">
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="{{ form['email'] if form else '' }}" required>
                 </div>
                 <div class="col-md-6">
                     <label for="company" class="form-label">Company Name</label>

@@ -60,7 +60,7 @@ def search():
             # print(f"rows {rows}")
     except Exception as e:
         # TODO search-9 make message user friendly
-        flash(str(e), "danger")
+        flash("Something wen't wrong, please try again later", "danger")
     # hint: use allowed_columns in template to generate sort dropdown
     # hint2: convert allowed_columns into a list of tuples representing (value, label)
     # do this prior to passing to render_template, but not before otherwise it can break validation
@@ -72,13 +72,6 @@ def add():
     form = {}
     if request.method == "POST":
         # TODO add-1 retrieve form data for name, address, city, state, country, zip, website
-        companyname = request.form.get('name', "")
-        companyaddress = request.form.get('address', "")
-        country = request.form.get('country', "")
-        state = request.form.get('state', "")
-        city = request.form.get('city', "")
-        companyzipcode = request.form.get('zip', "")
-        companywebsite = request.form.get('website', "")
 
         '''
             Done
@@ -99,6 +92,14 @@ def add():
             # TODO add-7 website is not required
             # note: call zip variable zipcode as zip is a built in function it could lead to issues
         '''
+         
+        companyname = request.form.get('name', "")
+        companyaddress = request.form.get('address', "")
+        country = request.form.get('country', "")
+        state = request.form.get('state', "")
+        city = request.form.get('city', "")
+        companyzipcode = request.form.get('zip', "")
+        companywebsite = request.form.get('website', "")
         
         has_error = False # use this to control whether or not an insert occurs
 
@@ -114,7 +115,7 @@ def add():
         if companyzipcode == "":
             flash("Company Zipcode Required", "warning")
             has_error = True
-
+        
         if not has_error:
             try:
                 result = DB.insertOne("""
@@ -125,9 +126,8 @@ def add():
                     flash("Added Company", "success")
             except Exception as e:
                 # TODO add-9 make message user friendly
-                flash(str(e), "danger")
-        else:
-            form = request.form
+                flash("Something wen't wrong, please try again later", "danger")
+        form = request.form
     return render_template("add_company.html", form=form)
 
 @company.route("/edit", methods=["GET", "POST"])
@@ -156,27 +156,53 @@ def edit():
             # TODO edit-7 website is not required
             # TODO edit-8 zipcode is required (flash proper error message)
             
+            companyname = request.form.get('name', "")
+            companyaddress = request.form.get('address', "")
+            country = request.form.get('country', "")
+            state = request.form.get('state', "")
+            city = request.form.get('city', "")
+            companyzipcode = request.form.get('zip', "")
+            companywebsite = request.form.get('website', "")
+
+            data['name'] = companyname
+            data['address'] = companyaddress
+            data['country'] = country
+            data['state'] = state
+            data['city'] = city
+            data['zip'] = companyzipcode
+            data['website'] = companywebsite
+
             # note: call zip variable zipcode as zip is a built in function it could lead to issues
             # populate data dict with mappings
             has_error = False # use this to control whether or not an insert occurs
 
+            if companyname == "":
+                flash("Company Name Required", "warning")
+                has_error = True
+            if companyaddress == "":
+                flash("Company Address Required", "warning")
+                has_error = True
+            if city == "":
+                flash("City Name Required", "warning")
+                has_error = True
+            if companyzipcode == "":
+                flash("Company Zipcode Required", "warning")
+                has_error = True
             
+
+
             if not has_error:
                 try:
                     # TODO edit-9 fill in proper update query
                     # name, address, city, state, country, zip, website
                     result = DB.update("""
-                    UPDATE ...
-                    SET
-                    ...
-                    """, data)
+                    UPDATE IS601_MP3_Companies
+                    SET name=%s, address=%s, country=%s, state=%s, city=%s, zip=%s, website=%s where id=%s""", companyname, companyaddress, country, state, city, companyzipcode, companywebsite, id)
                     if result.status:
-                        print("updated record")
                         flash("Updated record", "success")
                 except Exception as e:
                     # TODO edit-10 make this user-friendly
-                    print(f"{e}")
-                    flash(str(e), "danger")
+                    flash(e, "danger")
         row = {}
         try:
             # TODO edit-11 fetch the updated data
@@ -189,7 +215,7 @@ def edit():
                 
         except Exception as e:
             # TODO edit-12 make this user-friendly
-            flash(str(e), "danger")
+            flash("Something wen't wrong, please try again later", "danger")
     # TODO edit-13 pass the company data to the render template
     return render_template("edit_company.html", company=row)
 
@@ -206,8 +232,16 @@ def delete():
     except:
         id = ""
     if id != "":
-        pass
+        try:
+            result = DB.update("""UPDATE IS601_MP3_Employees SET company_id=null where company_id=%s""", id)
+            if result.status:
+                result = DB.delete(""" DELETE FROM IS601_MP3_Companies where id=%s """, id)
+                if result.status:
+                    flash("Company Data Deleted", "success")
+        except Exception as e:
+            # TODO edit-12 make this user-friendly
+            flash("Something wen't wrong, please try again later", "danger")
     else:
         flash("No Id Found", "warning")
-        return redirect(url_for('company.search'))
+    return redirect(url_for('company.search'))
     

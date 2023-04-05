@@ -21,11 +21,11 @@
             <div class="row col-md-12">
                 <div class="mb-3 col-md-6">
                     <label for="name" class="form-label">Company Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="name" placeholder="Company Name" name="companyname" value="{{ company['name'] if company else '' }}" required>
+                    <input type="text" class="form-control" id="name" placeholder="Company Name" name="name" value="{{ company['name'] if company else '' }}" required>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="address" class="form-label">Company Address <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="address" placeholder="Company Address" name="companyaddress" value="{{ company['address'] if company else '' }}" required>
+                    <input type="text" class="form-control" id="address" placeholder="Company Address" name="address" value="{{ company['address'] if company else '' }}" required>
                 </div>
             </div>
             {# use this for country/state selection #}
@@ -39,13 +39,13 @@
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="zipcode" class="form-label">Zipcode <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" name="companyzipcode" value="{{ company['zip'] if company else '' }}" required>
+                    <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" name="zip" value="{{ company['zip'] if company else '' }}" required>
                 </div>
             </div>
             <div class="row col-md-12">
                 <div class="mb-3 col-md-6">
                     <label for="website" class="form-label">Company Website</label>
-                    <input type="text" class="form-control" id="website" placeholder="Company Website" value="{{ company['website'] if company else '' }}" name="companywebsite">
+                    <input type="text" class="form-control" id="website" placeholder="Company Website" value="{{ company['website'] if company else '' }}" name="website">
                 </div>
             </div>
 

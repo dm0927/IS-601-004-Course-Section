@@ -59,7 +59,6 @@ def test_add_compnay(client):
         id = int(result.row["id"])
         print("id", id)
         resp = client.get(f"/company/edit?id={id}", follow_redirects=True )
-        #print(resp.data)
         from bs4 import BeautifulSoup
         soup = BeautifulSoup(resp.data, "html.parser")
         form = soup.form
