@@ -1,5 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, flash, url_for
 from sql.db import DB
+import pycountry
+
 company = Blueprint('company', __name__, url_prefix='/company')
 
 @company.route("/search", methods=["GET"])
@@ -23,7 +25,7 @@ def search():
     # TODO search-6 append sorting if column and order are provided and within the allows columsn and allowed order asc,desc
     # TODO search-7 append limit (default 10) or limit greater than 1 and less than or equal to 100
     # TODO search-8 provide a proper error message if limit isn't a number or if it's out of bounds
-    
+
     limit = 10 # TODO change this per the above requirements
     if request.args.get('name'):
         name = request.args.get('name')
@@ -109,6 +111,9 @@ def add():
         if companyaddress == "":
             flash("Company Address Required", "warning")
             has_error = True
+        if country != "" and pycountry.countries.get(alpha_2=country) == None:
+            flash("Invalid Country Name", "warning")
+            has_error = True    
         if city == "":
             flash("City Name Required", "warning")
             has_error = True
@@ -188,8 +193,6 @@ def edit():
             if companyzipcode == "":
                 flash("Company Zipcode Required", "warning")
                 has_error = True
-            
-
 
             if not has_error:
                 try:

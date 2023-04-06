@@ -33,6 +33,9 @@
             </div>
             {{sort_filter(cols=allowed_columns)}}
             <div class="col">
+                <input type="text" class="form-control" id="name" placeholder="Employee Limit" name="limit" value="{{request.args.get('limit',10)}}">
+            </div>
+            <div class="col">
                 <input type="submit" class="btn btn-primary" value="Filter" />
                 <a href="{{url_for('employee.search')}}" class="btn btn-secondary">Reset</a>
             </div>

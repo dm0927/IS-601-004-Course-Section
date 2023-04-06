@@ -1,5 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, flash, url_for
 from sql.db import DB
+import re
+
 employee = Blueprint('employee', __name__, url_prefix='/employee')
 
 
@@ -45,6 +47,11 @@ def search():
     templimit = int(request.args.get('limit', 10))
     if templimit and (templimit >= 10 and templimit <= 100):
         limit = templimit
+    templimit = int(request.args.get('limit', 10))
+    if templimit and (templimit >= 10 and templimit <= 100):
+        limit = templimit
+    else:
+        flash("Limit should be between 10 and 100", "warning")
     if request.args.get('column') and request.args.get('column') != "":
         column = request.args.get('column')
         order = request.args.get('order')
@@ -86,6 +93,8 @@ def add():
         last_name = request.form.get('last_name', "")
         email = request.form.get('email', "")
         company = request.form.get('company', None)
+
+        regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
         
         if first_name == "":
                 flash("First Name is Required", "warning")
@@ -96,6 +105,10 @@ def add():
         if email == "":
             flash("Email is Required", "warning")
             has_error = True
+        else:
+            if not re.fullmatch(regex, email):
+                flash("Please provide a valide email address", "warning")
+                has_error = True
                 
         if not has_error:
             try:
