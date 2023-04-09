@@ -135,6 +135,7 @@ class DB:
             db_url  = os.environ.get("DB_URL")
             from urllib.parse import urlparse
             url = urlparse(db_url)
+            print(url)
             if url:
                 user = url.username
                 password = url.password
