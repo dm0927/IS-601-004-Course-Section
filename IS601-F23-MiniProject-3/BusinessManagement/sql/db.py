@@ -133,6 +133,7 @@ class DB:
             from dotenv import load_dotenv
             load_dotenv()
             db_url  = os.environ.get("DB_URL")
+            print(db_url)
             from urllib.parse import urlparse
             url = urlparse(db_url)
             print(url)
