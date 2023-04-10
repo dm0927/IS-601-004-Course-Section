@@ -70,7 +70,7 @@ def search():
             rows = result.rows
     except Exception as e:
         # TODO search-10 make message user friendly
-        flash(e, "error")
+        flash("Something wen't wrong, please try again later", "danger")
     # hint: use allowed_columns in template to generate sort dropdown
     # hint2: convert allowed_columns into a list of tuples representing (value, label)
     # do this prior to passing to render_template, but not before otherwise it can break validation
@@ -125,7 +125,7 @@ def add():
             except Exception as e:
                 form = request.form
                 # TODO add-7 make message user friendly
-                flash(str(e), "danger")
+                flash("Something wen't wrong, please try again later", "danger")
         else:
             form = request.form
     return render_template("add_employee.html", form=form)
@@ -183,7 +183,7 @@ def edit():
                         flash("Updated record", "success")
                 except Exception as e:
                     # TODO edit-7 make this user-friendly
-                    flash(e, "danger")
+                    flash("Something wen't wrong, please try again later", "danger")
         row = {}
         try:
             # TODO edit-8 fetch the updated data 
@@ -195,7 +195,7 @@ def edit():
                 return redirect(url_for('employee.search'))
         except Exception as e:
             # TODO edit-9 make this user-friendly
-            flash(str(e), "danger")
+            flash("Something wen't wrong, please try again later", "danger")
     # TODO edit-10 pass the employee data to the render template
     return render_template("edit_employee.html", employee=row)
 
