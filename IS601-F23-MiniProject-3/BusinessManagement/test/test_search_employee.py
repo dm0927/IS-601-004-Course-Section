@@ -44,6 +44,7 @@ def get_cell_content_by_index(index, table):
 def query_and_get_assert(query, args, target, client, url):
     from ..sql.db import DB
     result = DB.selectAll(query, *args)
+    print(result)
     if result.status and result.rows:
         n = result.rows[0][target]
         print("db result", n)
