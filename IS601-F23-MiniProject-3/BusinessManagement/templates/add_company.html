@@ -9,22 +9,22 @@
         <form method="POST">
             {#
             using regular html generate fields (labels and input) with proper types for
-            name (required)
-            address (required)
-            city (required) (can be a text field, doesn't need to be a valid city)
-            state/country (required) (given)
-            zip (required)
-            website (required)
+            name ()
+            address ()
+            city () (can be a text field, doesn't need to be a valid city)
+            state/country () (given)
+            zip ()
+            website ()
             if a validation error occurs, the inserted form data should persist
             #}
             <div class="row col-md-12">
                 <div class="mb-3 col-md-6">
                     <label for="name" class="form-label">Company Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="name" placeholder="Company Name" name="name" value="{{ form['name'] if form else '' }}" required>
+                    <input type="text" class="form-control" id="name" placeholder="Company Name" name="name" value="{{ form['name'] if form else '' }}" >
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="address" class="form-label">Company Address <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="address" placeholder="Company Address" name="address" value="{{ form['address'] if form else '' }}" required>
+                    <input type="text" class="form-control" id="address" placeholder="Company Address" name="address" value="{{ form['address'] if form else '' }}" >
                 </div>
             </div>
             {# use this for country/state selection #}
@@ -34,11 +34,11 @@
             <div class="row col-md-12">
                 <div class="mb-3 col-md-6">
                     <label for="city" class="form-label">City <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="city" placeholder="City" name="city" value="{{ form['city'] if form else '' }}" required>
+                    <input type="text" class="form-control" id="city" placeholder="City" name="city" value="{{ form['city'] if form else '' }}" >
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="zipcode" class="form-label">Zipcode <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" name="zip" value="{{ form['zip'] if form else '' }}" required>
+                    <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" name="zip" value="{{ form['zip'] if form else '' }}" >
                 </div>
             </div>
             <div class="row col-md-12">
