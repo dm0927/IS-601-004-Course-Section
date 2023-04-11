@@ -192,7 +192,7 @@ def edit():
             if companyaddress == "":
                 flash("Company Address Required", "warning")
                 has_error = True
-            if country != "" or pycountry.countries.get(alpha_2=country) == None:
+            if country != "" and pycountry.countries.get(alpha_2=country) == None:
                 flash("Invalid Country Name", "warning")
                 has_error = True
             if state == "":
