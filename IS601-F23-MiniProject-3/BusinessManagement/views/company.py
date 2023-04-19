@@ -62,6 +62,7 @@ def search():
             # print(f"rows {rows}")
     except Exception as e:
         # TODO search-9 make message user friendly
+        print(str(e))
         flash("Something wen't wrong, please try again later", "danger")
     # hint: use allowed_columns in template to generate sort dropdown
     # hint2: convert allowed_columns into a list of tuples representing (value, label)
@@ -111,9 +112,12 @@ def add():
         if companyaddress == "":
             flash("Company Address Required", "warning")
             has_error = True
-        if country != "" and pycountry.countries.get(alpha_2=country) == None:
+        if country != "" or pycountry.countries.get(alpha_2=country) == None:
             flash("Invalid Country Name", "warning")
-            has_error = True    
+            has_error = True
+        if state == "":
+            flash("Invalid State Name", "warning")
+            has_error = True
         if city == "":
             flash("City Name Required", "warning")
             has_error = True
@@ -131,6 +135,7 @@ def add():
                     flash("Added Company", "success")
             except Exception as e:
                 # TODO add-9 make message user friendly
+                print(str(e))
                 flash("Something wen't wrong, please try again later", "danger")
         form = request.form
     return render_template("add_company.html", form=form)
@@ -187,6 +192,12 @@ def edit():
             if companyaddress == "":
                 flash("Company Address Required", "warning")
                 has_error = True
+            if country != "" and pycountry.countries.get(alpha_2=country) == None:
+                flash("Invalid Country Name", "warning")
+                has_error = True
+            if state == "":
+                flash("Invalid State Name", "warning")
+                has_error = True
             if city == "":
                 flash("City Name Required", "warning")
                 has_error = True
@@ -218,6 +229,7 @@ def edit():
                 
         except Exception as e:
             # TODO edit-12 make this user-friendly
+            print(str(e))
             flash("Something wen't wrong, please try again later", "danger")
     # TODO edit-13 pass the company data to the render template
     return render_template("edit_company.html", company=row)

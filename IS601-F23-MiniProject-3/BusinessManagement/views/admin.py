@@ -58,7 +58,8 @@ def importCSV():
                 # print(row) #example
                 # TODO importcsv-3 extract company data and append to company list 
                 # as a dict only with company data if all is present
-                if row['company_name'] != "" and row['address'] != "" and row['city'] != "" and row['country'] != "" and row['state'] != "" and row['zip'] != "":
+                if row['company_name'] != "" and row['address'] != "" and row['city'] != "" and row['country'] != "" and row['state'] != "" \
+                    and row['zip'] != "":
                     companyData = {
                         'name' : row['company_name'],
                         'address' : row['address'],
