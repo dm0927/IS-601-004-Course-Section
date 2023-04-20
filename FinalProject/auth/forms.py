@@ -12,8 +12,8 @@ def is_valid_username(username):
 class RegisterForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     email = EmailField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField("Password", validators=[InputRequired(), EqualTo('confirm', message='Passwords must match')])
-    confirm = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
+    password = PasswordField("Password", validators=[InputRequired(), EqualTo('confirm', message='Passwords must match'), Length(8)])
+    confirm = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo('password', message='Passwords must match'), Length(8)])
     submit = SubmitField("Register")
 
 class LoginForm(FlaskForm):
