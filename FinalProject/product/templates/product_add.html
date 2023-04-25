@@ -1,0 +1,25 @@
+<style>
+    select {
+        -webkit-appearance: listbox !important;
+    }
+</style>
+{% extends "layout.html" %}
+{% block title %}Product {{title}}{% endblock %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<div class="container-fluid">
+    <div class="offset-md-4 col-md-4 mt-4">
+        <div class="h3">Product {{title}}</div>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{render_field(form.productName)}}
+            {{render_field(form.productDesc)}}
+            {{render_field(form.productCategory)}}
+            {{render_field(form.stock)}}
+            {{render_field(form.unitprice)}}
+            {{render_field(form.visibility)}}
+            {{form.submit(class="btn btn-primary")}}
+        </form>
+    </div>
+</div>
+{% endblock %}

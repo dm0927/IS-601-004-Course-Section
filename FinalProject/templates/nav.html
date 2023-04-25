@@ -20,6 +20,20 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="{{url_for('auth.profile')}}">Profile</a>
                 </li>
+                {% if current_user.has_role("Admin") or current_user.has_role("Owner") %}
+                {% set product = [
+                    ("product.add", "Add"),
+                    ("product.viewAdmin", "View"),
+                ] %}
+                {{dropdown_nav("Product", product)}}
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{{url_for('product.view')}}">Products</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{{url_for('product.viewCart')}}">Cart</a>
+                </li>
                 <!-- roles nav (requires admin )-->
                 {% if current_user.has_role("Admin") %}
                 {% set roles = [
