@@ -1,0 +1,35 @@
+<style>
+    select {
+        -webkit-appearance: listbox !important;
+    }
+</style>
+{% extends "layout.html" %}
+{% block title %}Product View{% endblock %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="h3">Product Details for {{row.product_name}}</div>
+        <table class="table caption-top">
+            <tbody>
+                <tr>
+                    <td>Product Details</td>
+                    <td>{{row.prodct_description}}</td>
+                </tr>
+                <tr>
+                    <td>Product Price</td>
+                    <td>${{row.unit_price}}</td>
+                </tr>
+                <tr>
+                    <td>Product Quantity</td>
+                    <td>{{row.stock}}</td>
+                </tr>
+                <tr>
+                    <td>Product Category</td>
+                    <td>{{row.category}}</td>
+                </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
+{% endblock %}
