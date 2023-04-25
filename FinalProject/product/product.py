@@ -246,3 +246,12 @@ def viewCart():
         print(str(e))
         flash("Something wen't wrong, please try again later", "danger")
     return render_template("cart_view.html", rows=results)
+
+@product.route('/clear-cart', methods=['GET'])
+@login_required
+def clearcart():
+    id = current_user.get_id()
+    result = DB.delete("""
+                            DELETE FROM IS601_CART where customer_id = %s
+                        """, id)
+    return redirect(url_for('product.viewCart'))
