@@ -22,9 +22,11 @@
             </thead>
             <tbody>
                 {% if rows|length > 0 %}
+                    {% set ns = namespace(total=0) %}
                     {% for row in rows %}
                     <tr>
-                        <td>{{row['product_name']}}</td>
+                        {% set ns.total = ns.total + row['total_price'] %}
+                        <td><a href="{{url_for('product.productview')}}?id={{row['product_id']}}">{{row['product_name']}}</a></td>
                         <td>USD {{row['unit_price']}}</td>
                         <td>USD {{row['total_price']}}</td>
                         <td>
@@ -50,6 +52,11 @@
                         </td>
                     </tr>
                     {% endfor %}
+                    <tr>
+                        <td class="text-center" colspan="100%">
+                            <b>Grand Total: USD {{ns.total or 0}}</b>
+                        </td>
+                    </tr>
                 {% else %}
                     <tr>
                         <td colspan="100%" class="text-center">No Item In Cart</td>
