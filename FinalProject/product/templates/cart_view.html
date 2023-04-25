@@ -9,7 +9,7 @@
 {% from "_formhelpers.html" import render_field %}
 <div class="container-fluid">
     <div class="col-md-12">
-        <div class="h3">Product Details for</div>
+        <div class="h3">Cart's</div>
         <table class="table caption-top">
             <thead>
                 <tr>
@@ -53,8 +53,11 @@
                     </tr>
                     {% endfor %}
                     <tr>
-                        <td class="text-center" colspan="100%">
+                        <td class="text-center" colspan="3">
                             <b>Grand Total: USD {{ns.total or 0}}</b>
+                        </td>
+                        <td class="text-center" colspan="3">
+                            <a href="{{url_for('product.clearcart')}}"><b>Clear Cart</b></a>
                         </td>
                     </tr>
                 {% else %}
