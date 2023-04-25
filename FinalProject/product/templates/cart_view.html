@@ -1,0 +1,62 @@
+<style>
+    select {
+        -webkit-appearance: listbox !important;
+    }
+</style>
+{% extends "layout.html" %}
+{% block title %}Cart View{% endblock %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="h3">Product Details for</div>
+        <table class="table caption-top">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Product Price</th>
+                    <th>Product Total Price</th>
+                    <th>Product Quanity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if rows|length > 0 %}
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{row['product_name']}}</td>
+                        <td>USD {{row['unit_price']}}</td>
+                        <td>USD {{row['total_price']}}</td>
+                        <td>
+                            <form method="POST">
+                                <div class="row">
+                                    <input type="hidden" name="cart_id" value="{{row['cart_id']}}" />
+                                    <div class="col-md-3">
+                                        <input type="number" class="form-control" name="quantity"
+                                            value="{{row['quantity']}}" />
+                                    </div>
+                                    <div class="col-md-3 d-grid">
+                                        <input type="submit" value="Update" class="btn btn-secondary btn-sm" />
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="cart_id" value="{{row['cart_id']}}" />
+                                <input type="hidden" name="quantity" value="0" />
+                                <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="100%" class="text-center">No Item In Cart</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+          </table>
+    </div>
+</div>
+{% endblock %}

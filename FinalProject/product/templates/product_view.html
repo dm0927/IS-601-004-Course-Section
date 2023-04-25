@@ -1,0 +1,86 @@
+<style>
+    select {
+        -webkit-appearance: listbox !important;
+    }
+</style>
+{% extends "layout.html" %}
+{% block title %}Product View{% endblock %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<div class="container-fluid">
+    <div class="col-md-12 row">
+       <form method="GET">
+            <div class="col-md-12 row">
+                <div class="h3">Product Filter</div>
+                <div class="col-md-2">
+                    <b><label>Product</label></b>
+                    <input type="text" class="form-control" name="product_name" id="product_name" placeholder="Product Name" value="{{request.args.get('product_name') if request.args.get('product_name') else ''}}">
+                </div>
+                <div class="col-md-2">
+                    <b><label>Category</label></b>
+                    <select class="form-control" name="category" value="{{request.args.get('category') if request.args.get('category') else ''}}">
+                        <option value="">Select an Option</option>
+                        <option value="book">Book</option>
+                        <option value="food">Food</option>
+                        <option value="electronics">Electronics</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <b><label>Order By</label></b>
+                    <select class="form-control" name="order" value="{{request.args.get('order') if request.args.get('order') else ''}}">
+                        <option value="">Select an Option</option>
+                        <option value="product_name">Name</option>
+                        <option value="category">Category</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <b><label>Mode</label></b>
+                    <select class="form-control" name="type" value="{{request.args.get('type') if request.args.get('type') else ''}}">
+                        <option value="asc">Asc</option>
+                        <option value="desc">Desc</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <b><label>Limit</label></b>
+                    <select class="form-control" name="limit" value="{{request.args.get('limit') if request.args.get('limit') else ''}}">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mt-4">
+                    <button type="submit" class="btn btn-secondary">Filter</button>
+                    <a href="?"><button type="button" class="btn btn-danger">Reset</button></a>
+                </div>
+            </div>
+       </form>
+        <div class="h3">Product View</div>
+        <div class="col-md-12 row m-1 p-1">
+            {% for row in rows %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{row.product_name}}</h5>
+                        <p class="card-text">{{row.prodct_description[:100]}}...</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Qty: <b>{{row.stock}}</b></li>
+                        <li class="list-group-item">Category: <b>{{row.category|upper}}</b></li>
+                        <li class="list-group-item">Price: <b>{{row.unit_price}}</b></li>
+                        {% if current_user.has_role("Admin") or current_user.has_role("Owner") %}
+                            <li class="list-group-item">Visibility: <b>{{True if row.visibility == 1 else False}}</b></li>
+                        {% endif %}
+                    </ul>
+                    <div class="card-body">
+                        <a href="{{url_for('product.productview')}}?id={{row['id']}}" class="card-link">View</a>
+                        {% if current_user.has_role("Admin") or current_user.has_role("Owner") %}
+                            <a href="{{url_for('product.edit')}}?id={{row['id']}}" class="card-link">Edit</a>
+                        {% endif %}
+                        <a href="{{url_for('product.addToCart')}}?id={{row['id']}}" class="card-link">Add To Cart</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
