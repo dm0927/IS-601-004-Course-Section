@@ -30,6 +30,9 @@
                 </tr>
             </tbody>
           </table>
+        {% if current_user.has_role("Admin") or current_user.has_role("Owner") %}
+            <a href="{{url_for('product.edit')}}?id={{row['id']}}" class="card-link">Edit</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
