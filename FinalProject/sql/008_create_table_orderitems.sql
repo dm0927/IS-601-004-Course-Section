@@ -1,7 +1,6 @@
 CREATE TABLE
-    IS601_CART(
+    IS601_Orderitemss(
         id int auto_increment PRIMARY KEY,
-        customer_id int,
         product_id int,
         quantity int,
         price int,

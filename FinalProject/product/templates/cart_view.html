@@ -53,10 +53,13 @@
                     </tr>
                     {% endfor %}
                     <tr>
-                        <td class="text-center" colspan="3">
+                        <td class="text-start" colspan="3">
                             <b>Grand Total: USD {{ns.total or 0}}</b>
                         </td>
-                        <td class="text-center" colspan="3">
+                        <td class="text-start">
+                            <a href="{{url_for('product.purchase')}}"><b>Purchase Items for USD {{ns.total or 0}}</b></a>
+                        </td>
+                        <td class="text-end">
                             <a href="{{url_for('product.clearcart')}}"><b>Clear Cart</b></a>
                         </td>
                     </tr>
