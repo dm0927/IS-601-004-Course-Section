@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, current_app, session, request
-from auth.forms import LoginForm, RegisterForm, ProfileForm
 from sql.db import DB
 from flask_login import login_required, current_user
 from roles.permissions import product_permission
-from product.forms import ProductAdd
+from product.forms import ProductAdd, PurchaseCheckout
 
 product = Blueprint('product', __name__, url_prefix='/product',template_folder='templates')
 
@@ -187,12 +186,6 @@ def addToCart():
     customer_id = int(current_user.get_id())
     if id != "":
         try:
-            # result = DB.selectOne("""
-            #                             SELECT id, product_name, prodct_description, category, stock, unit_price
-            #                             FROM IS601_Product
-            #                             where id = %s
-            #                      """, id)
-
             result = DB.selectOne("""
                                         SELECT id, quantity from IS601_CART where customer_id = %s and product_id = %s
                                     """, customer_id, id)
@@ -246,6 +239,121 @@ def viewCart():
         print(str(e))
         flash("Something wen't wrong, please try again later", "danger")
     return render_template("cart_view.html", rows=results)
+
+@product.route('/purchase', methods=['GET','POST'])
+@login_required
+def purchase():
+    form = PurchaseCheckout()  
+    try:
+        user_id = int(current_user.get_id())
+        results = []
+        results = DB.selectAll("""
+                                    SELECT C.id as cart_id, C.product_id, C.quantity, P.product_name, P.unit_price
+                                    FROM IS601_CART as C
+                                    LEFT JOIN IS601_Product as P on P.id = C.product_id
+                                    where C.customer_id = %s
+                                """, user_id)
+        
+        if results.status and results.rows:
+            for row in results.rows:
+                row['total_price'] = int(row['quantity']) * float(row['unit_price'])
+            results = results.rows
+
+        if len(results.rows) <= 0:
+            return redirect(url_for('product.viewCart'))
+
+        if form.validate_on_submit():
+            firstName = request.form.get('firstName')
+            lastName = request.form.get('lastName')
+            streetaddress1 = request.form.get('streetaddress1')
+            streetaddress2 = request.form.get('streetaddress2')
+            state = request.form.get('state')
+            city = request.form.get('city')
+            country = request.form.get('country')
+            zipcode = request.form.get('zipcode')
+            modeofpayment = request.form.get('modeofpayment')
+            price = float(request.form.get('price'))
+
+            payment_method = ['cod','debit','credit','paypal']
+
+            total_price = 0
+            
+            for row in results:
+                total_price +=  row['total_price']
+            
+            validationApproved = True
+
+            if modeofpayment not in payment_method:
+                validationApproved = False
+                flash("Incorrect Mode Of Payment, please enter a correct payment mode", "warning")
+            
+            if float(total_price) != price:
+                validationApproved = False
+                flash("Incorrect Amount, please enter a correct amount", "warning")
+            
+            for row in results:
+                getProductQTYandPrice = DB.selectOne("""
+                                            SELECT id, product_name, stock, unit_price
+                                            FROM IS601_Product
+                                            where id = %s
+                                        """, row['product_id'])
+            
+                getProductQTYandPrice = getProductQTYandPrice.row
+                if getProductQTYandPrice['stock'] - row['quantity'] < 0:
+                    validationApproved = False
+                    flash(f"{getProductQTYandPrice['product_name']} is out of stock.", "warning")
+                if getProductQTYandPrice['unit_price'] != row['unit_price']:
+                    validationApproved = False
+                    flash(f"{getProductQTYandPrice['product_name']} price has been changed from {getProductQTYandPrice['unit_price']} to {row['unit_price']}.", "warning")
+
+            if validationApproved:
+                pass
+                # Do Code of inserting data into database
+                order_data = DB.insertOne("""
+                                            INSERT INTO 
+                                                        IS601_Orders(first_name, last_name, address, total_price, money_received, user_id, payment_method)
+                                                        VALUES(%s, %s, %s, %s, %s, %s, %s)
+                                          """, firstName, lastName, (streetaddress1 + " " + streetaddress2 + ", " + city + ", " + state + ", " + country + ", " + zipcode), total_price, total_price, user_id, modeofpayment)
+                order_id = DB.selectOne("""
+                                            SELECT LAST_INSERT_ID() as order_id;
+                                        """)
+                
+                order_id = order_id.row['order_id']
+
+                for row in results:
+                    DB.insertOne("""
+                                    INSERT INTO IS601_Orderitemss(order_id, product_id, quantity, price)
+                                    VALUES(%s, %s, %s, %s)
+                                 """, order_id, row['product_id'], row['quantity'], row['unit_price'])
+                DB.delete("""DELETE FROM IS601_CART where customer_id = %s """, user_id)
+                flash("Order Placed", "success")
+
+    except Exception as e:
+            print(str(e))
+            flash("Something wen't wrong, please try again later", "danger")
+    return render_template("purchase.html", form=form, rows=results)
+
+
+@product.route('/view-orders', methods=['GET'])
+@login_required
+def customervieworder():
+    try:
+        user_id = int(current_user.get_id())
+        result = []
+        result = DB.selectAll("""
+                                SELECT id, total_price, created
+                                from IS601_Orders
+                                where user_id = %s
+                              """, user_id)
+        if result.status:
+            for row in result.rows:
+                row['created'] = str(row['created'])
+    except Exception as e:
+        print(str(e))
+        flash("Something wen't wrong, please try again later", "danger")
+
+    return render_template("viewcustomerorder.html", rows=result.rows)
+
 
 @product.route('/clear-cart', methods=['GET'])
 @login_required
