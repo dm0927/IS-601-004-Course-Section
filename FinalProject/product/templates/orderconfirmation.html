@@ -9,10 +9,14 @@
 {% from "_formhelpers.html" import render_field %}
 <div class="container-fluid">
     <div class="col-md-12">
+        {% if displayThanks %}
         <div class="h3">Order Confirmation</div>
-        <div class="text-center">
-            <h3>Thanks For Purchasing Item for Us.</h3>
-        </div>
+            <div class="text-center">
+                <h3>Thanks For Purchasing Item for Us.</h3>
+            </div>
+        {% else %}
+        <div class="h3">Order History for Order ID {{request.args.id}}</div>
+        {% endif %}
         <table class="table caption-top">
             <tbody>
                 <tr>
@@ -46,9 +50,9 @@
             <thead>
                 <tr>
                     <th>Product Name</th>
-                    <th>Product Quanity</th>
-                    <th>Product Price</th>
-                    <th>Product Total Price</th>
+                    <th>Quanity</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,7 +62,7 @@
                     <tr>
                         {% set ns.total = ns.total + row['total_price'] %}
                         <td><a href="{{url_for('product.productview')}}?id={{row['product_id']}}">{{row['product_name']}}</a></td>
-                        <td>{{row['quantity']}}</td>
+                        <td class="text-left">{{row['quantity']}}</td>
                         <td>USD {{row['unit_price']}}</td>
                         <td>USD {{row['total_price']}}</td>
                     </tr>
