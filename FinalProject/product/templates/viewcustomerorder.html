@@ -26,7 +26,7 @@
                             <td>{{row['id']}}</td>
                             <td>{{row['total_price']}}</td>
                             <td>{{row['created']}}</td>
-                            <td><a href="">View Order Details</a></td>
+                            <td><a href="{{url_for('product.customervieworder')}}?id={{row['id']}}">View Order Details</a></td>
                         </tr>
                     {% endfor %}
                 {% else %}
