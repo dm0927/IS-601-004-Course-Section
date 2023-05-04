@@ -1,0 +1,78 @@
+<style>
+    select {
+        -webkit-appearance: listbox !important;
+    }
+</style>
+{% extends "layout.html" %}
+{% block title %}Order Confirmation{% endblock %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="h3">Order Confirmation</div>
+        <div class="text-center">
+            <h3>Thanks For Purchasing Item for Us.</h3>
+        </div>
+        <table class="table caption-top">
+            <tbody>
+                <tr>
+                    <h4><td>First Name: {{orderitemplaced['firstname']}}</td>
+                    <td>Last Name: {{orderitemplaced['lastname']}}</td></h4>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table caption-top">
+            <tbody>
+                <tr>
+                    <td>Shipping Address: {{orderitemplaced['address']}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table caption-top">
+            <tbody>
+                <tr>
+                    <td>Total Price: {{orderitemplaced['total_price']}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table caption-top">
+            <tbody>
+                <tr>
+                    <td>Payment Method: {{orderitemplaced['modeofpayment']}} (<b>{{orderitemplaced['textMOD']}}</b>)</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table caption-top">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Product Quanity</th>
+                    <th>Product Price</th>
+                    <th>Product Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if orderData|length > 0 %}
+                    {% set ns = namespace(total=0) %}
+                    {% for row in orderData %}
+                    <tr>
+                        {% set ns.total = ns.total + row['total_price'] %}
+                        <td><a href="{{url_for('product.productview')}}?id={{row['product_id']}}">{{row['product_name']}}</a></td>
+                        <td>{{row['quantity']}}</td>
+                        <td>USD {{row['unit_price']}}</td>
+                        <td>USD {{row['total_price']}}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="text-center" colspan="100%">Grand Total: {{ns.total}}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="100%" class="text-center">No Item In Cart</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+          </table>
+    </div>
+</div>
+{% endblock %}

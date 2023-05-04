@@ -254,13 +254,19 @@ def purchase():
                                     where C.customer_id = %s
                                 """, user_id)
         
+        if len(results.rows) <= 0:
+            return redirect(url_for('product.viewCart'))
+        
         if results.status and results.rows:
             for row in results.rows:
                 row['total_price'] = int(row['quantity']) * float(row['unit_price'])
             results = results.rows
 
-        if len(results.rows) <= 0:
-            return redirect(url_for('product.viewCart'))
+
+        '''
+            UCID - dm767
+            Date - May 4
+        '''
 
         if form.validate_on_submit():
             firstName = request.form.get('firstName')
@@ -327,6 +333,32 @@ def purchase():
                                  """, order_id, row['product_id'], row['quantity'], row['unit_price'])
                 DB.delete("""DELETE FROM IS601_CART where customer_id = %s """, user_id)
                 flash("Order Placed", "success")
+
+                if modeofpayment == "cod":
+                    modeofpayment = "Cash on Delivery"
+                    textMOD = "Will Pay once the product are deliverd"
+                elif modeofpayment == "debit":
+                    modeofpayment = "Debit Card"
+                    textMOD = "Paid via a debit card"
+                elif modeofpayment == "credit":
+                    modeofpayment = "Credit Card"
+                    textMOD = "Paid via a credit card"
+                elif modeofpayment == "paypal":
+                    modeofpayment = "Paypal"
+                    textMOD = "Paid via a paypal account"
+
+                orderData = {
+                    'firstname' : firstName,
+                    'lastname' : lastName,
+                    'address' : (streetaddress1 + " " + streetaddress2 + ", " + city + ", " + state + ", " + country + ", " + zipcode),
+                    'total_price' : total_price,
+                    'modeofpayment' : modeofpayment,
+                    'textMOD': textMOD
+
+                }
+
+                return render_template("orderconfirmation.html", orderitemplaced=orderData, orderData=results)
+
 
     except Exception as e:
             print(str(e))
