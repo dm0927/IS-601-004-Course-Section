@@ -11,3 +11,16 @@ class ProductAdd(FlaskForm):
     unitprice = DecimalField("Price", validators=[DataRequired()])
     visibility = BooleanField("Visible", validators=[Optional()])
     submit = SubmitField("Add Product")
+
+class PurchaseCheckout(FlaskForm):
+    firstName = StringField("First Name", validators=[DataRequired()])
+    lastName = StringField("Last Name", validators=[DataRequired()])
+    streetaddress1 = StringField("Street Address 1", validators=[DataRequired()])
+    streetaddress2 = StringField("Street Address 2")
+    state = SelectField("State", choices=[('NJ','New Jersey'),('NY','New York'), ('MA','Massachusetts'),('AZ','Arizona')])
+    city = StringField("City", validators=[DataRequired()])
+    country = StringField("Country", validators=[DataRequired()])
+    zipcode = StringField("Zip Code", validators=[DataRequired()])
+    modeofpayment = SelectField("Mode Of Payment", choices=[('cod','Cash on Deilvery'),('debit','Debit Card'), ('credit','Credit Card'),('paypal','Paypal')])
+    price = DecimalField("Enter Amount", validators=[DataRequired()])
+    submit = SubmitField("Purchase")

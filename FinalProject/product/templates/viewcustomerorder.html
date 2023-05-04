@@ -1,0 +1,53 @@
+<style>
+    select {
+        -webkit-appearance: listbox !important;
+    }
+</style>
+{% extends "layout.html" %}
+{% block title %}Cart View{% endblock %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="h3">Orders</div>
+        <table class="table caption-top">
+            <thead>
+                <tr>
+                    <th>Order Id</th>
+                    {% if isAdmin %}
+                        <th>Email</th>
+                        <th>Username</th>
+                    {% endif %}
+                    <th>Total Amount</th>
+                    <th>Order Placed On</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if rows|length > 0 %}
+                    {% for row in rows %}
+                        <tr>
+                            <td>{{row['id']}}</td>
+                            {% if isAdmin %}
+                                <td>{{row['email']}}</td>
+                                <td>{{row['username']}}</td>
+                            {% endif %}
+                            <td>{{row['total_price']}}</td>
+                            <td>{{row['created']}}</td>
+                            {% if isAdmin %}
+                                <td><a href="{{url_for('product.shopview')}}?id={{row['id']}}">View Order Details</a></td>
+                            {% else %}
+                                <td><a href="{{url_for('product.customervieworder')}}?id={{row['id']}}">View Order Details</a></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="100%" class="text-center">No Order Placed</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+          </table>
+    </div>
+</div>
+{% endblock %}

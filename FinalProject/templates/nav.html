@@ -21,6 +21,15 @@
                     <a class="nav-link" aria-current="page" href="{{url_for('auth.profile')}}">Profile</a>
                 </li>
                 {% if current_user.has_role("Admin") or current_user.has_role("Owner") %}
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{{url_for('product.shopview')}}">View Orders</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{{url_for('product.customervieworder')}}">View Orders</a>
+                </li>
+                {% endif %}
+                {% if current_user.has_role("Admin") or current_user.has_role("Owner") %}
                 {% set product = [
                     ("product.add", "Add"),
                     ("product.viewAdmin", "View"),
