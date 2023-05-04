@@ -275,6 +275,7 @@ def purchase():
         '''
             UCID - dm767
             Date - May 4
+            
         '''
 
         if form.validate_on_submit():
