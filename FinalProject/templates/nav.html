@@ -22,7 +22,7 @@
                 </li>
                 {% if current_user.has_role("Admin") or current_user.has_role("Owner") %}
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{url_for('product.view')}}">View Orders</a>
+                    <a class="nav-link" aria-current="page" href="{{url_for('product.shopview')}}">View Orders</a>
                 </li>
                 {% else %}
                 <li class="nav-item">

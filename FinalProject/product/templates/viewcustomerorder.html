@@ -14,6 +14,10 @@
             <thead>
                 <tr>
                     <th>Order Id</th>
+                    {% if isAdmin %}
+                        <th>Email</th>
+                        <th>Username</th>
+                    {% endif %}
                     <th>Total Amount</th>
                     <th>Order Placed On</th>
                     <th>Action</th>
@@ -24,9 +28,17 @@
                     {% for row in rows %}
                         <tr>
                             <td>{{row['id']}}</td>
+                            {% if isAdmin %}
+                                <td>{{row['email']}}</td>
+                                <td>{{row['username']}}</td>
+                            {% endif %}
                             <td>{{row['total_price']}}</td>
                             <td>{{row['created']}}</td>
-                            <td><a href="{{url_for('product.customervieworder')}}?id={{row['id']}}">View Order Details</a></td>
+                            {% if isAdmin %}
+                                <td><a href="{{url_for('product.shopview')}}?id={{row['id']}}">View Order Details</a></td>
+                            {% else %}
+                                <td><a href="{{url_for('product.customervieworder')}}?id={{row['id']}}">View Order Details</a></td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 {% else %}
