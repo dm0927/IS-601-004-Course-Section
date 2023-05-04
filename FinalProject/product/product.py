@@ -365,6 +365,73 @@ def purchase():
     return render_template("purchase.html", form=form, rows=results)
 
 
+@product.route('/shop-view-orders', methods=['GET'])
+@login_required
+@product_permission.require(http_exception=403)
+def shopview():
+    try:    
+        
+        order_id = request.args.get('id',"")
+        if order_id != "":
+            try:
+                orderData = DB.selectOne("""
+                            SELECT o.first_name as firstname, o.last_name as lastname, address, total_price, payment_method as modeofpayment, us.email, us.username
+                            FROM IS601_Orders as o
+                            LEFT JOIN IS601_Users as us on us.id = o.user_id
+                            where o.id = %s
+                        """, order_id)
+
+                if orderData.status and orderData.row:
+                    orderData = orderData.row
+                if orderData['modeofpayment'] == "cod":
+                    orderData['modeofpayment'] = "Cash on Delivery"
+                    orderData['textMOD'] = "Will Pay once the product are deliverd"
+                elif orderData['modeofpayment'] == "debit":
+                    orderData['modeofpayment'] = "Debit Card"
+                    orderData['textMOD'] = "Paid via a debit card"
+                elif orderData['modeofpayment'] == "credit":
+                    orderData['modeofpayment'] = "Credit Card"
+                    orderData['textMOD'] = "Paid via a credit card"
+                elif orderData['modeofpayment'] == "paypal":
+                    orderData['modeofpayment'] = "Paypal"
+                    orderData['textMOD'] = "Paid via a paypal account"
+
+                results = []
+
+                results = DB.selectAll("""
+                            SELECT p.id as product_id, os.quantity, os.price as unit_price, p.product_name
+                            FROM IS601_Orderitemss as os
+                            LEFT JOIN IS601_Product as p on p.id = os.product_id
+                            where order_id = %s
+                            """, order_id)
+
+                if results.status and results.rows:
+                    for row in results.rows:
+                        row['total_price'] = int(row['quantity']) * float(row['unit_price'])
+                results = results.rows
+
+                return render_template("orderconfirmation.html", orderitemplaced=orderData, orderData=results, displayThanks = False, isAdmin=True)
+
+            except Exception as e:
+                print(str(e))
+                return redirect(url_for('product.shopview'))
+
+        result = []
+        result = DB.selectAll("""
+                                SELECT o.id, o.total_price, o.created, us.email, us.username
+                                from IS601_Orders as o
+                                LEFT JOIN IS601_Users as us on us.id = o.user_id
+                              """)
+        if result.status:
+            for row in result.rows:
+                row['created'] = str(row['created'])
+            result = result.rows
+    except Exception as e:
+        print(str(e))
+        flash("Something wen't wrong, please try again later", "danger")
+
+    return render_template("viewcustomerorder.html", rows=result, isAdmin=True)
+
 @product.route('/view-orders', methods=['GET'])
 @login_required
 def customervieworder():
@@ -409,7 +476,7 @@ def customervieworder():
                         row['total_price'] = int(row['quantity']) * float(row['unit_price'])
                     results = results.rows
 
-                return render_template("orderconfirmation.html", orderitemplaced=orderData, orderData=results, displayThanks = False)
+                return render_template("orderconfirmation.html", orderitemplaced=orderData, orderData=results, displayThanks = False, isAdmin=False)
 
         user_id = int(current_user.get_id())
         result = []
@@ -426,7 +493,7 @@ def customervieworder():
         print(str(e))
         flash("Something wen't wrong, please try again later", "danger")
 
-    return render_template("viewcustomerorder.html", rows=result)
+    return render_template("viewcustomerorder.html", rows=result, isAdmin=False)
 
 
 @product.route('/clear-cart', methods=['GET'])

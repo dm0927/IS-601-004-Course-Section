@@ -39,6 +39,16 @@
                 </tr>
             </tbody>
         </table>
+        {% if isAdmin %}
+        <table class="table caption-top">
+            <tbody>
+                <tr>
+                    <td>Email Address: {{orderitemplaced['email']}}</td>
+                    <td>Username: {{orderitemplaced['username']}}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
         <table class="table caption-top">
             <tbody>
                 <tr>
