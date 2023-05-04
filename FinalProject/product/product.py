@@ -184,6 +184,15 @@ def addToCart():
     except:
         quantity = 1
     customer_id = int(current_user.get_id())
+
+    getProductData = DB.selectOne("""
+                                        SELECT unit_price
+                                        FROM IS601_Product
+                                        where id = %s
+                                  """, id)
+    
+    addprice = getProductData.row['unit_price']
+
     if id != "":
         try:
             result = DB.selectOne("""
@@ -192,13 +201,13 @@ def addToCart():
             if result.status and result.row:
                 quantity += int(result.row['quantity'])
                 result = DB.update("""
-                                        UPDATE IS601_CART set quantity = %s where customer_id=%s and product_id=%s
-                                    """, quantity, customer_id, id)
+                                        UPDATE IS601_CART set quantity = %s, price = %s where customer_id=%s and product_id=%s
+                                    """, quantity, addprice, customer_id, id)
                 flash("Product Updated in Cart", "success")
             else:
                 result = DB.insertOne("""
-                                        INSERT into IS601_CART(customer_id, product_id, quantity) VALUES(%s, %s, %s)
-                                    """, customer_id, id, quantity)
+                                        INSERT into IS601_CART(customer_id, product_id, quantity, price) VALUES(%s, %s, %s, %s)
+                                    """, customer_id, id, quantity, addprice)
                 flash("Product Added in Cart", "success")
         except Exception as e:
             print(str(e))
@@ -224,7 +233,7 @@ def viewCart():
     try:
         user_id = int(current_user.get_id())
         results = DB.selectAll("""
-                                    SELECT C.id as cart_id, C.product_id, C.quantity, P.product_name, P.unit_price
+                                    SELECT C.id as cart_id, C.product_id, C.quantity, P.product_name, C.price as unit_price
                                     FROM IS601_CART as C
                                     LEFT JOIN IS601_Product as P on P.id = C.product_id
                                     where C.customer_id = %s
@@ -248,7 +257,7 @@ def purchase():
         user_id = int(current_user.get_id())
         results = []
         results = DB.selectAll("""
-                                    SELECT C.id as cart_id, C.product_id, C.quantity, P.product_name, P.unit_price
+                                    SELECT C.id as cart_id, C.product_id, C.quantity, P.product_name, C.price as unit_price
                                     FROM IS601_CART as C
                                     LEFT JOIN IS601_Product as P on P.id = C.product_id
                                     where C.customer_id = %s
@@ -310,7 +319,8 @@ def purchase():
                     flash(f"{getProductQTYandPrice['product_name']} is out of stock.", "warning")
                 if getProductQTYandPrice['unit_price'] != row['unit_price']:
                     validationApproved = False
-                    flash(f"{getProductQTYandPrice['product_name']} price has been changed from {getProductQTYandPrice['unit_price']} to {row['unit_price']}.", "warning")
+                    percentageChange = (getProductQTYandPrice['unit_price'] - row['unit_price'])/ getProductQTYandPrice['unit_price'] * 100
+                    flash(f"{getProductQTYandPrice['product_name']} price has been changed from  {row['unit_price']} to {getProductQTYandPrice['unit_price']}. A change of {'{:10.2f}'.format(percentageChange)}%", "warning")
 
             if validationApproved:
                 # Do Code of inserting data into database
