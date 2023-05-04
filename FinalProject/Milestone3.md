@@ -1,6 +1,6 @@
 <table><tr><td> <em>Assignment: </em> IS601 Milestone 3 Shop Project</td></tr>
 <tr><td> <em>Student: </em> Divya Rajesh Mehta (dm767)</td></tr>
-<tr><td> <em>Generated: </em> 5/4/2023 3:53:21 PM</td></tr>
+<tr><td> <em>Generated: </em> 5/4/2023 7:40:30 PM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/is601-milestone-3-shop-project/grade/dm767" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <ol><li>Checkout Milestone3 branch</li><li>Create a new markdown file called milestone3.md</li><li>git add/commit/push immediate</li><li>Fill in the below deliverables</li><li>At the end copy the markdown and paste it into milestone3.md</li><li>Add/commit/push the changes to Milestone3</li><li>PR Milestone3 to dev and verify</li><li>PR dev to prod and verify</li><li>Checkout dev locally and pull changes to get ready for Milestone 4</li><li>Submit the direct link to this new milestone3.md file from your GitHub prod branch to Canvas</li></ol><p>Note: Ensure all images appear properly on GitHub and everywhere else. Images are only accepted from dev or prod, not localhost. All website links must be from prod (you can assume/infer this by getting your dev URL and changing dev to prod).</p></td></tr></table>
 <table><tr><td> <em>Deliverable 1: </em> Orders will be able to be recorded </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
@@ -23,6 +23,9 @@
 <tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/236304726-eff30a1a-47fe-4b2d-9af1-4151d8ed95aa.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>screenshot showing the items pending purchase from Heroku<br></p>
 </td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/236352206-7fd867a7-7470-4b50-9ddb-9713cd01cc65.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>If Cart.unit_cost differs from Products.unit_cost display a % change to the user (show<br>a demo of this)<br></p>
+</td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 5: </em> Add a screenshot showing the Order Process validations from the code</td></tr>
 <tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/236305072-ef0ba430-f489-4934-9344-0a1209309319.png"/></td></tr>
@@ -41,6 +44,9 @@
 </td></tr>
 <tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/236305924-0c7a7664-fbab-4ae5-9fdb-ebdafa2d5d19.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Show unavailable stock message<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/27128087/236352206-7fd867a7-7470-4b50-9ddb-9713cd01cc65.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Show Price difference message<br></p>
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 7: </em> Briefly describe the code flow/process of the purchase process</td></tr>
