@@ -128,6 +128,7 @@ def view():
                 where 1=1 and visibility = 1
             """
     limit = request.args.get('limit', 10) # TODO change this per the above requirements
+    limit = int(limit)
     if request.args.get('product_name'):
         name = request.args.get('product_name')
         query += " and product_name like %(name)s"
